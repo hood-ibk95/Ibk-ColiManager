@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBK Euro-Afrique — Synthèse Livraison</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#111f36;--navy3:#192c48;
+  --gold:#c85a1a;--gold2:#e06a20;--green:#2ec98a;
+  --red:#ff5c5c;--blue:#2e6bb5;--orange:#c85a1a;--purple:#a78bfa;
+  --ibk-blue:#1a3a6b;--ibk-orange:#b84d12;--ibk-light-blue:#3a6fb5;
+  --text:#e8edf4;--muted:#7a93b0;
+  --border:rgba(255,255,255,0.08);--card:rgba(255,255,255,0.04);
+  --radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;
+  background-image:radial-gradient(ellipse 70% 40% at 50% -5%,rgba(26,58,107,.35) 0%,transparent 70%),
+  radial-gradient(ellipse 40% 30% at 90% 85%,rgba(184,77,18,.12) 0%,transparent 60%);}
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(10,22,40,.97);border-bottom:1px solid rgba(58,111,181,.25);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-img{height:42px;width:auto;border-radius:6px;object-fit:contain;background:#f0f4f8;padding:3px 6px;}
+.logo-text{display:flex;flex-direction:column;}
+.logo h1{font-size:.78rem;font-weight:800;letter-spacing:.04em;color:var(--text);}
+.logo span{display:block;font-size:.58rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;}
+.header-actions{display:flex;gap:7px;align-items:center;}
+.screen{display:none;max-width:740px;margin:0 auto;padding:20px 13px 60px;}
+.screen.active{display:block;}
+#screen-login{max-width:400px;}
+.login-card{background:var(--navy2);border:1px solid rgba(58,111,181,.2);border-radius:18px;padding:32px 28px;margin-top:32px;}
+.login-card h2{font-size:1.3rem;font-weight:800;margin-bottom:5px;}
+.login-card p{color:var(--muted);font-size:.82rem;margin-bottom:24px;}
+.login-logo{text-align:center;margin-bottom:20px;}
+.login-logo img{height:52px;width:auto;border-radius:8px;background:#f0f4f8;padding:4px 10px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.field select,.field input,.field textarea{width:100%;padding:9px 12px;background:var(--navy3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+.field textarea{resize:vertical;min-height:55px;}
+.field select:focus,.field input:focus,.field textarea:focus{border-color:var(--ibk-light-blue);}
+.field .sw{position:relative;}
+.field .sw::after{content:'▾';position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:.76rem;}
+.field input:disabled,.field select:disabled{opacity:.42;cursor:not-allowed;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-size:.84rem;font-weight:700;letter-spacing:.04em;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--ibk-blue);color:#fff;width:100%;}
+.btn-primary:hover{background:var(--ibk-light-blue);}
+.btn-secondary{background:var(--card);border:1px solid rgba(58,111,181,.25);color:var(--text);}
+.btn-secondary:hover{border-color:var(--ibk-light-blue);color:var(--ibk-light-blue);}
+.btn-green{background:var(--green);color:var(--navy);}
+.btn-green:hover{filter:brightness(1.1);}
+.btn-orange{background:var(--ibk-orange);color:#fff;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-danger{background:rgba(255,92,92,.15);border:1px solid rgba(255,92,92,.3);color:var(--red);}
+.btn-danger:hover{background:rgba(255,92,92,.25);}
+.btn-sm{padding:5px 12px;font-size:.74rem;}
+.error-msg{background:rgba(255,92,92,.1);border:1px solid rgba(255,92,92,.3);color:var(--red);border-radius:8px;padding:8px 12px;font-size:.78rem;margin-top:9px;display:none;}
+.sync-bar{background:rgba(26,58,107,.25);border:1px solid rgba(58,111,181,.2);border-radius:8px;padding:8px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:.76rem;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.sync-dot.syncing{background:var(--ibk-orange);animation:pulse .8s infinite;}
+.sync-dot.error{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:9px;}
+.user-badge{background:var(--navy2);border:1px solid var(--border);border-radius:50px;padding:5px 13px 5px 8px;display:flex;align-items:center;gap:8px;}
+.user-badge .avatar{width:26px;height:26px;border-radius:50%;background:var(--ibk-blue);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;}
+.user-badge .uname{font-size:.81rem;font-weight:700;}
+.user-badge .urole{font-size:.66rem;color:var(--muted);}
+.tabs{display:flex;gap:2px;background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;text-align:center;padding:8px 13px;border-radius:7px;white-space:nowrap;font-size:.72rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;cursor:pointer;transition:all .2s;color:var(--muted);}
+.tab.active{background:var(--ibk-blue);color:#fff;box-shadow:0 2px 8px rgba(26,58,107,.4);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.month-nav{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.month-nav button{background:var(--card);border:1px solid rgba(58,111,181,.2);color:var(--text);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:.92rem;}
+.month-nav span{font-weight:700;font-size:.93rem;flex:1;text-align:center;}
+.objective-box{background:var(--navy2);border:1px solid rgba(58,111,181,.18);border-radius:var(--radius);padding:15px 17px;margin-bottom:16px;}
+.obj-head{display:flex;justify-content:space-between;margin-bottom:8px;align-items:baseline;}
+.obj-head span{font-size:.71rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.obj-head strong{font-size:1.3rem;font-weight:800;}
+.progress-bar{height:7px;background:var(--navy3);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--ibk-light-blue),var(--ibk-orange));transition:width .6s;}
+.progress-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:.66rem;color:var(--muted);}
+.quota-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(184,77,18,.15);border:1px solid rgba(184,77,18,.3);color:var(--ibk-orange);border-radius:6px;padding:3px 9px;font-size:.7rem;font-weight:700;margin-top:8px;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.stat-card{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 13px;}
+.stat-card .label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.stat-card .value{font-size:1.35rem;font-weight:800;font-family:'DM Mono',monospace;}
+.stat-card.green .value{color:var(--green);}
+.stat-card.gold .value{color:var(--ibk-orange);}
+.stat-card.red .value{color:var(--red);}
+.stat-card.blue .value{color:var(--ibk-light-blue);}
+.stat-card.orange .value{color:var(--ibk-orange);}
+.stat-card.purple .value{color:var(--purple);}
+.form-card{background:var(--navy2);border:1px solid rgba(58,111,181,.15);border-radius:var(--radius);padding:17px;margin-bottom:14px;}
+.form-card h3{font-size:.9rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.form-card h3 em{color:var(--ibk-orange);font-style:normal;}
+.fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field-num input[type="time"]{width:100%;padding:9px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:1.06rem;outline:none;text-align:center;transition:border-color .2s;}
+.field-num input[type="time"]:focus{border-color:var(--ibk-light-blue);}
+.rh-contrat-btn.active{background:var(--ibk-blue);color:#fff;border-color:var(--ibk-blue);}
+.rh-step{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;background:var(--navy3);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);}
+.rh-step.done{border-color:rgba(46,201,138,.3);background:rgba(46,201,138,.05);}
+.rh-step .step-info{flex:1;}
+.rh-step .step-label{font-size:.82rem;font-weight:700;color:var(--text);}
+.rh-step .step-time{font-size:.76rem;color:var(--green);font-family:'DM Mono',monospace;margin-top:2px;}
+.rh-step .step-time.empty{color:var(--muted);}
+.rh-step .btn-stamp{padding:7px 14px;font-size:.76rem;background:var(--ibk-blue);color:#fff;border:none;border-radius:7px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.rh-step .btn-stamp:hover{background:var(--ibk-light-blue);}
+.rh-step .btn-stamp.done{background:rgba(46,201,138,.2);color:var(--green);border:1px solid rgba(46,201,138,.3);}
+.rh-day-row{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.rh-day-row .rh-date{font-size:.82rem;font-weight:700;min-width:80px;}
+.rh-day-row .rh-horaires{font-size:.72rem;color:var(--muted);font-family:'DM Mono',monospace;flex:1;}
+.rh-day-row .rh-duree{font-family:'DM Mono',monospace;font-size:.95rem;font-weight:700;color:var(--green);}
+.rh-absence-badge{background:rgba(184,77,18,.15);color:var(--ibk-orange);border-radius:5px;padding:2px 7px;font-size:.68rem;font-weight:700;}
+.rh-retard-badge{background:rgba(255,92,92,.15);color:var(--red);border-radius:5px;padding:2px 7px;font-size:.68rem;font-weight:700;}
+.field-num input{width:100%;padding:9px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:1.06rem;outline:none;text-align:center;transition:border-color .2s;}
+.field-num input:focus{border-color:var(--ibk-light-blue);}
+.calc-result{background:rgba(46,201,138,.07);border:1px solid rgba(46,201,138,.2);border-radius:8px;padding:10px 14px;margin:12px 0;display:flex;align-items:center;justify-content:space-between;}
+.calc-result .rl{font-size:.71rem;color:var(--green);text-transform:uppercase;letter-spacing:.07em;}
+.calc-result .rv{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--green);}
+.calc-orange .rl,.calc-orange .rv{color:var(--ibk-orange);}
+.calc-orange{background:rgba(184,77,18,.07);border:1px solid rgba(184,77,18,.25);}
+.calc-red .rl,.calc-red .rv{color:var(--red);}
+.calc-red{background:rgba(255,92,92,.07);border:1px solid rgba(255,92,92,.2);}
+.photo-section{margin:13px 0;}
+.photo-section h4{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.photo-lbl{font-size:.64rem;color:var(--muted);margin-bottom:4px;}
+.photo-zone{border:2px dashed var(--border);border-radius:10px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:border-color .2s;}
+.photo-zone:hover{border-color:var(--ibk-light-blue);}
+.photo-zone .picon{font-size:1.4rem;}
+.photo-zone .pcap{font-size:.66rem;color:var(--muted);text-align:center;padding:0 6px;}
+.prev-img{display:none;width:100%;height:86px;object-fit:cover;border-radius:8px;margin-top:4px;cursor:pointer;}
+.hist-table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:.74rem;}
+thead th{background:var(--navy3);padding:8px 10px;text-align:left;font-size:.61rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap;}
+tbody tr{border-top:1px solid var(--border);}
+tbody tr:hover{background:rgba(255,255,255,.02);}
+tbody td{padding:8px 10px;font-family:'DM Mono',monospace;white-space:nowrap;}
+.tag{display:inline-block;border-radius:4px;padding:2px 5px;font-size:.64rem;font-weight:700;}
+.tag-quota{background:rgba(184,77,18,.15);color:var(--ibk-orange);}
+.admin-grid{display:grid;gap:9px;}
+.admin-row{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;}
+.admin-row .info .name2{font-weight:700;font-size:.9rem;}
+.admin-row .info .code{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);}
+.export-box{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.export-box p{font-size:.8rem;color:var(--muted);}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:14px;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--navy2);border:1px solid var(--border);border-radius:18px;padding:26px 22px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:1rem;font-weight:800;margin-bottom:8px;}
+.modal p{color:var(--muted);font-size:.8rem;margin-bottom:18px;}
+.modal .mbtns{display:flex;gap:8px;margin-top:14px;}
+.modal .mbtns .btn{flex:1;}
+.recl-card{background:var(--navy2);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:9px;}
+.recl-card.sp{border-left-color:var(--ibk-orange);}
+.recl-card.snr{border-left-color:var(--green);}
+.recl-card.sr{border-left-color:var(--red);}
+.recl-head{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:9px;flex-wrap:wrap;}
+.recl-head .rmeta strong{color:var(--text);font-size:.86rem;display:block;margin-bottom:2px;}
+.recl-head .rmeta span{font-size:.72rem;color:var(--muted);}
+.recl-status{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:2px 8px;font-size:.68rem;font-weight:700;white-space:nowrap;}
+.s-pending{background:rgba(184,77,18,.15);color:var(--ibk-orange);}
+.s-nonresp{background:rgba(46,201,138,.15);color:var(--green);}
+.s-resp{background:rgba(255,92,92,.15);color:var(--red);}
+.recl-details{display:grid;grid-template-columns:auto 1fr;gap:4px 13px;font-size:.72rem;margin-bottom:9px;}
+.recl-details .dk{color:var(--muted);}
+.recl-details .dv{font-weight:600;}
+.recl-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.anom-card{background:var(--navy2);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:var(--radius);padding:13px 15px;margin-bottom:9px;}
+.anom-head{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:8px;flex-wrap:wrap;}
+.anom-head .ameta strong{font-size:.86rem;display:block;margin-bottom:2px;}
+.anom-head .ameta span{font-size:.72rem;color:var(--muted);}
+.anom-badge{display:inline-flex;align-items:center;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:var(--purple);border-radius:6px;padding:2px 8px;font-size:.68rem;font-weight:700;}
+.penalty-badge{display:inline-flex;align-items:center;background:rgba(255,92,92,.15);color:var(--red);border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;font-family:'DM Mono',monospace;}
+.anom-details{display:grid;grid-template-columns:auto 1fr;gap:4px 13px;font-size:.72rem;margin-bottom:9px;}
+.anom-details .dk{color:var(--muted);}
+.anom-details .dv{font-weight:600;}
+.alert-banner{background:rgba(184,77,18,.1);border:1px solid rgba(184,77,18,.3);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ibk-orange);}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.section-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:9px;margin-top:16px;}
+.indem-badge{display:inline-flex;align-items:center;background:rgba(184,77,18,.15);color:var(--ibk-orange);border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;font-family:'DM Mono',monospace;}
+@media(max-width:520px){
+  header{padding:8px 12px;}
+  .logo-img{height:32px;}
+  .logo h1{font-size:.7rem;}
+  .logo span{display:none;}
+  .btn-sm{padding:5px 10px;font-size:.7rem;}
+  .tabs{padding:3px;gap:3px;}
+  .tab{padding:7px 10px;font-size:.66rem;letter-spacing:0;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .fields-grid{grid-template-columns:1fr;}
+  .photo-grid{grid-template-columns:1fr;}
+  .form-card{padding:14px 12px;}
+  .recl-card,.anom-card{padding:11px 13px;}
+  .screen{padding:16px 10px 50px;}
+  .user-badge .urole{display:none;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="IBK Euro-Afrique" id="header-logo">
+    <div class="logo-text">
+      <h1>IBK Euro-Afrique</h1>
+      <span>Synthèse livraison quotidienne</span>
+    </div>
+  </div>
+  <div class="header-actions" id="header-actions"></div>
+</header>
+
+<!-- LOGIN -->
+<div class="screen active" id="screen-login">
+  <div class="login-card">
+    <div class="login-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="IBK" id="login-logo"></div>
+    <h2>Connexion</h2>
+    <p>Sélectionnez votre nom et entrez votre code personnel.</p>
+    <div class="field"><label>Livreur</label><div class="sw"><select id="login-name"><option value="">— Sélectionner —</option></select></div></div>
+    <div class="field"><label>Code personnel</label><input type="password" id="login-pin" placeholder="••••" maxlength="8" autocomplete="off"></div>
+    <button class="btn btn-primary" onclick="doLogin()">✓ Connexion</button>
+    <div class="error-msg" id="login-error">Code incorrect. Veuillez réessayer.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+  <div class="dash-top">
+    <div class="user-badge">
+      <div class="avatar" id="user-avatar">A</div>
+      <div><div class="uname" id="user-name-badge">-</div><div class="urole" id="user-role-badge">-</div></div>
+    </div>
+  </div>
+  <div id="sync-bar" class="sync-bar" style="display:none">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-text">Synchronisé</span>
+  </div>
+  <div id="recl-reminder" style="display:none" class="alert-banner">⚠️ <span id="recl-reminder-text"></span></div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="0" onclick="switchTab(0)">✏️ Livraison</div>
+    <div class="tab" data-tab="1" onclick="switchTab(1)">📋 Historique</div>
+    <div class="tab" data-tab="2" onclick="switchTab(2)">🔔 Réclamations</div>
+    <div class="tab" data-tab="3" onclick="switchTab(3)">⚠️ Anomalies</div>
+    <div class="tab" data-tab="5" onclick="switchTab(5)">⏱️ Heures</div>
+    <div class="tab synth-tab" data-tab="6" onclick="switchTab(6)" style="display:none">💰 Synthèse</div>
+    <div class="tab admin-tab" data-tab="4" onclick="switchTab(4)" style="display:none">⚙️ Admin</div>
+  </div>
+
+  <!-- TAB 0 : SAISIE -->
+  <div class="tab-content active" id="tc0">
+    <div class="month-nav"><button onclick="changeMonth(-1)">‹</button><span id="lbl-month-0">—</span><button onclick="changeMonth(1)">›</button></div>
+    <div class="objective-box">
+      <div class="obj-head"><span>Objectif mensuel (livré total)</span><strong id="obj-current">0 / 2600</strong></div>
+      <div class="progress-bar"><div class="progress-fill" id="obj-bar" style="width:0%"></div></div>
+      <div class="progress-labels"><span>0</span><span>2 600 colis</span></div>
+      <div id="quota-info"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card green"><div class="label">Livrés total</div><div class="value" id="s-total">0</div></div>
+      <div class="stat-card"><div class="label">Dont relais</div><div class="value" id="s-relais">0</div></div>
+      <div class="stat-card blue"><div class="label">Livrés adresse</div><div class="value" id="s-adresse">0</div></div>
+      <div class="stat-card red"><div class="label">RD</div><div class="value" id="s-rd">0</div></div>
+      <div class="stat-card"><div class="label">Avisés</div><div class="value" id="s-avis">0</div></div>
+      <div class="stat-card red"><div class="label">AI</div><div class="value" id="s-ai">0</div></div>
+    </div>
+    <div class="stats-grid" id="quota-stats" style="display:none">
+      <div class="stat-card gold" style="grid-column:1/-1"><div class="label">⭐ Colis prime (quota dépassé)</div><div class="value" id="s-prime">0</div></div>
+    </div>
+    <div class="form-card">
+      <h3>📥 Saisie du jour — <em id="form-date-label">—</em></h3>
+      <div class="field" style="margin-bottom:12px;"><label>Tournée réalisée</label>
+        <div class="sw"><select id="form-tournee">
+          <option value="">— Sélectionner —</option>
+          <option>Tournée 1</option><option>Tournée 2</option><option>Tournée 3</option>
+          <option>Tournée Renfort 1</option><option>Tournée Renfort 2</option>
+        </select></div>
+      </div>
+      <div class="fields-grid">
+        <div class="field-num"><label>Colis emportés</label><input type="number" id="f-emportes" min="0" placeholder="0" oninput="calcLive()"></div>
+        <div class="field-num"><label>Colis livrés total</label><input type="number" id="f-livres" min="0" placeholder="0" oninput="calcLive()"></div>
+        <div class="field-num"><label>Dont point relais</label><input type="number" id="f-relais" min="0" placeholder="0" oninput="calcLive()"></div>
+        <div class="field-num"><label>Colis RD</label><input type="number" id="f-rd" min="0" placeholder="0"></div>
+        <div class="field-num"><label>Colis avisés</label><input type="number" id="f-avis" min="0" placeholder="0"></div>
+        <div class="field-num"><label>Colis AI</label><input type="number" id="f-ai" min="0" placeholder="0"></div>
+      </div>
+      <div class="calc-result"><span class="rl">Livrés à l'adresse / bureau</span><span class="rv" id="live-calc">0</span></div>
+      <div class="divider"></div>
+      <h3 style="font-size:.86rem;margin-bottom:12px;">🔔 Réclamations du jour</h3>
+      <div class="fields-grid" style="margin-bottom:10px;">
+        <div class="field-num"><label>Réclamations reçues</label><input type="number" id="f-recl-nb" min="0" placeholder="0" oninput="calcReclLive()"></div>
+        <div class="field-num"><label>Réclamations traitées</label><input type="number" id="f-recl-trait" min="0" placeholder="0" oninput="calcReclLive()"></div>
+      </div>
+      <div class="calc-result calc-orange"><span class="rl">En attente de traitement</span><span class="rv" id="live-recl-reste">0</span></div>
+      <div class="photo-section">
+        <h4>📷 Photos justificatives</h4>
+        <div class="photo-grid">
+          <div><div class="photo-lbl">Flasheur du jour</div>
+            <div class="photo-zone" onclick="document.getElementById('inp-flash').click()">
+              <div class="picon">📱</div><div class="pcap">Photo flasheur</div>
+              <input type="file" id="inp-flash" accept="image/*" capture="environment" onchange="loadPhoto(this,'prev-flash','flash')" style="display:none">
+            </div><img id="prev-flash" class="prev-img" onclick="viewPhoto(this.src)">
+          </div>
+          <div><div class="photo-lbl">Feuille de route</div>
+            <div class="photo-zone" onclick="document.getElementById('inp-fdr').click()">
+              <div class="picon">📄</div><div class="pcap">Feuille de route</div>
+              <input type="file" id="inp-fdr" accept="image/*" capture="environment" onchange="loadPhoto(this,'prev-fdr','fdr')" style="display:none">
+            </div><img id="prev-fdr" class="prev-img" onclick="viewPhoto(this.src)">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEntry()">💾 Enregistrer</button>
+        <button class="btn btn-green" style="flex:1" onclick="openSendModal()">📤 Envoyer</button>
+      </div>
+      <div class="error-msg" id="form-error">Veuillez sélectionner une tournée.</div>
+    </div>
+  </div>
+
+  <!-- TAB 1 : HISTORIQUE -->
+  <div class="tab-content" id="tc1">
+    <div class="month-nav"><button onclick="changeMonth(-1)">‹</button><span id="lbl-month-1">—</span><button onclick="changeMonth(1)">›</button></div>
+    <div id="hist-content"></div>
+  </div>
+
+  <!-- TAB 2 : RÉCLAMATIONS -->
+  <div class="tab-content" id="tc2">
+    <div class="stats-grid">
+      <div class="stat-card orange"><div class="label">En attente</div><div class="value" id="rs-att">0</div></div>
+      <div class="stat-card green"><div class="label">Non responsable</div><div class="value" id="rs-nr">0</div></div>
+      <div class="stat-card red"><div class="label">Responsable</div><div class="value" id="rs-re">0</div></div>
+    </div>
+    <div class="form-card" id="recl-form-section">
+      <h3>➕ Nouvelle réclamation</h3>
+      <div class="fields-grid">
+        <div class="field" style="margin-bottom:0"><label>Nom du réclamant</label><input type="text" id="rf-nom" placeholder="Nom Prénom"></div>
+        <div class="field" style="margin-bottom:0"><label>Adresse</label><input type="text" id="rf-adresse" placeholder="Adresse complète"></div>
+        <div class="field" style="margin-bottom:0"><label>Date de livraison</label><input type="date" id="rf-date-livr"></div>
+        <div class="field" style="margin-bottom:0"><label>N° COL-</label><input type="text" id="rf-col" placeholder="COL-XXXXXXXXX"></div>
+        <div class="field" style="margin-bottom:0"><label>Motif</label>
+          <div class="sw"><select id="rf-motif">
+            <option value="">— Motif —</option>
+            <option>Contestation mains propres</option>
+            <option>Contestation tiers</option>
+          </select></div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label>Objet</label>
+          <div class="sw"><select id="rf-objet" onchange="toggleIndem()">
+            <option value="">— Objet —</option>
+            <option>Objet livré</option>
+            <option>Objet perdu</option>
+          </select></div>
+        </div>
+      </div>
+      <div id="indem-field" style="display:none;margin-top:11px;">
+        <div class="field" style="margin-bottom:0"><label>💰 Montant indemnisation (€) — Admin</label>
+          <input type="number" id="rf-indem" min="0" step="0.01" placeholder="0.00" disabled>
+        </div>
+      </div>
+      <div class="field" style="margin-top:11px;margin-bottom:0;"><label>Statut (réservé admin)</label>
+        <div class="sw"><select id="rf-statut" disabled>
+          <option value="en_attente">En attente de clôture</option>
+          <option value="non_responsable">Non responsable</option>
+          <option value="responsable">Responsable</option>
+        </select></div>
+      </div>
+      <div class="photo-section">
+        <h4>📋 Attestation signée</h4>
+        <div class="photo-zone" onclick="document.getElementById('inp-recl-attest').click()" style="min-height:78px;">
+          <div class="picon">📋</div><div class="pcap">Photo attestation signée</div>
+          <input type="file" id="inp-recl-attest" accept="image/*" capture="environment" onchange="loadPhoto(this,'prev-attest','attest')" style="display:none">
+        </div>
+        <img id="prev-attest" class="prev-img" style="height:110px;" onclick="viewPhoto(this.src)">
+      </div>
+      <button class="btn btn-orange" style="width:100%;margin-top:9px;" onclick="saveReclamation()">🔔 Enregistrer la réclamation</button>
+      <div class="error-msg" id="recl-form-error">Veuillez remplir : nom, adresse, date, N° COL et motif.</div>
+    </div>
+    <div class="section-title">Mes réclamations</div>
+    <div id="recl-list"></div>
+    <div id="recl-office-section" style="display:none;">
+      <div class="divider"></div>
+      <div class="section-title">⚡ Réclamations d'office — clôturées par La Poste</div>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px;">Automatiquement en statut <strong style="color:var(--red)">Responsable</strong>.</p>
+      <div class="form-card">
+        <h3>➕ Ajouter une réclamation d'office</h3>
+        <div class="field"><label>Livreur concerné</label>
+          <div class="sw"><select id="rof-livreur"><option value="">— Sélectionner —</option></select></div>
+        </div>
+        <div class="fields-grid">
+          <div class="field" style="margin-bottom:0"><label>Nom du réclamant</label><input type="text" id="rof-nom" placeholder="Nom Prénom"></div>
+          <div class="field" style="margin-bottom:0"><label>Adresse</label><input type="text" id="rof-adresse" placeholder="Adresse complète"></div>
+          <div class="field" style="margin-bottom:0"><label>Date de livraison</label><input type="date" id="rof-date-livr"></div>
+          <div class="field" style="margin-bottom:0"><label>N° COL-</label><input type="text" id="rof-col" placeholder="COL-XXXXXXXXX"></div>
+          <div class="field" style="margin-bottom:0"><label>Motif</label>
+            <div class="sw"><select id="rof-motif">
+              <option value="">— Motif —</option>
+              <option>Livreur n'a pas sonné</option>
+              <option>Pas d'avis de passage en boîte aux lettres</option>
+              <option>Plainte de comportement</option>
+            </select></div>
+          </div>
+          <div class="field" style="margin-bottom:0"><label>Objet</label>
+            <div class="sw"><select id="rof-objet">
+              <option value="">— Objet —</option>
+              <option>Objet livré</option>
+              <option>Objet perdu</option>
+            </select></div>
+          </div>
+        </div>
+        <div class="field" style="margin-top:11px;margin-bottom:0;"><label>💰 Montant indemnisation (€)</label>
+          <input type="number" id="rof-indem" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <button class="btn btn-orange" style="width:100%;margin-top:12px;" onclick="saveReclOffice()">⚡ Enregistrer</button>
+        <div class="error-msg" id="rof-form-error">Tous les champs sont obligatoires.</div>
+      </div>
+      <div class="section-title">Liste des réclamations d'office</div>
+      <div id="recl-office-list"></div>
+    </div>
+  </div>
+
+  <!-- TAB 3 : ANOMALIES -->
+  <div class="tab-content" id="tc3">
+    <div class="stats-grid">
+      <div class="stat-card purple"><div class="label">Anomalies total</div><div class="value" id="as-total">0</div></div>
+      <div class="stat-card red"><div class="label">Pénalités (€)</div><div class="value" id="as-penalty">0</div></div>
+      <div class="stat-card"><div class="label">Ce mois</div><div class="value" id="as-month">0</div></div>
+    </div>
+    <div class="form-card" id="anom-form-section" style="display:none;">
+      <h3>⚠️ Saisir une anomalie</h3>
+      <div class="field"><label>Livreur concerné</label>
+        <div class="sw"><select id="af-livreur"><option value="">— Sélectionner —</option></select></div>
+      </div>
+      <div class="fields-grid">
+        <div class="field" style="margin-bottom:0"><label>Date de l'anomalie</label><input type="date" id="af-date"></div>
+        <div class="field" style="margin-bottom:0"><label>N° COL (optionnel)</label><input type="text" id="af-col" placeholder="COL-XXXXXXXXX"></div>
+      </div>
+      <div class="field" style="margin-top:11px;"><label>Catégorie d'anomalie</label>
+        <div class="sw"><select id="af-categorie" onchange="updatePenalty()">
+          <option value="">— Sélectionner —</option>
+          <option value="avisé_1ere" data-p="4.36">Avisé en 1ère présentation</option>
+          <option value="divergence" data-p="1.76">Divergence</option>
+          <option value="retour_agence" data-p="1.76">Retour agence</option>
+          <option value="rd_rd" data-p="1.76">RD/rd</option>
+          <option value="rd_bal" data-p="1.76">rd/bal</option>
+          <option value="relais_devoye" data-p="4.36">Relais dévoyé à l'adresse</option>
+          <option value="contre_signature" data-p="4.36">Contre signature au voisin</option>
+          <option value="non_collecte" data-p="4.36">Non collecté sans photo</option>
+        </select></div>
+      </div>
+      <div class="calc-result calc-red" style="margin-top:0;">
+        <span class="rl">Pénalité applicable</span>
+        <span class="rv" id="live-penalty">—</span>
+      </div>
+      <div class="field"><label>Commentaire (optionnel)</label>
+        <textarea id="af-comment" placeholder="Détails supplémentaires…"></textarea>
+      </div>
+      <button class="btn btn-purple" style="width:100%;" onclick="saveAnomalie()">⚠️ Enregistrer l'anomalie</button>
+      <div class="error-msg" id="anom-form-error">Veuillez sélectionner un livreur, une date et une catégorie.</div>
+    </div>
+    <div class="section-title" id="anom-list-title">Mes anomalies</div>
+    <div id="anom-list"></div>
+  </div>
+
+  <!-- TAB 4 : ADMIN -->
+  <div class="tab-content" id="tc4">
+    <div class="month-nav"><button onclick="changeMonth(-1)">‹</button><span id="lbl-month-4">—</span><button onclick="changeMonth(1)">›</button></div>
+    <div class="section-title">Livraisons — tous les livreurs</div>
+    <div id="admin-grid" class="admin-grid"></div>
+    <div class="section-title">Modifier les saisies d'un livreur</div>
+    <div class="form-card" style="margin-bottom:10px;">
+      <div class="field" style="margin-bottom:0;"><label>Sélectionner un livreur</label>
+        <div class="sw"><select id="admin-edit-livreur" onchange="adminShowHist()">
+          <option value="">— Sélectionner —</option>
+        </select></div>
+      </div>
+    </div>
+    <div id="admin-hist-content"></div>
+    <div class="section-title">Réclamations — vue d'ensemble</div>
+    <div id="admin-recl-grid" class="admin-grid"></div>
+    <div class="section-title">Anomalies — vue d'ensemble</div>
+    <div id="admin-anom-grid" class="admin-grid"></div>
+    <div class="divider"></div>
+    <div class="export-box">
+      <div><div style="font-weight:700;margin-bottom:3px;">Exports CSV</div><p>Livraisons, réclamations ou anomalies.</p></div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="exportCSV()">⬇ Livraisons</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportReclCSV()">⬇ Réclamations</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportAnomCSV()">⬇ Anomalies</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-title">Codes d'accès</div>
+    <div id="codes-list"></div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="color:var(--green)">Gestion des livreurs</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px;">Ajoutez ou désactivez un livreur — sans redéployer l'app.</div>
+
+    <!-- Ajouter un livreur -->
+    <div class="form-card" style="margin-bottom:12px;">
+      <div style="font-size:.82rem;font-weight:700;color:var(--green);margin-bottom:10px;">➕ Ajouter un livreur</div>
+      <div class="field"><label>Nom complet</label><input type="text" id="new-livreur-nom" placeholder="Prénom Nom"></div>
+      <div class="fields-grid">
+        <div class="field-num"><label>Code PIN (4 chiffres)</label><input type="number" id="new-livreur-pin" min="1000" max="9999" placeholder="1234"></div>
+        <div class="field-num"><label>Salaire base (€)</label><input type="number" id="new-livreur-salaire" min="0" placeholder="1600"></div>
+      </div>
+      <div class="field" style="margin-top:8px;"><label>Rôle</label>
+        <select id="new-livreur-role">
+          <option value="Livreur">Livreur</option>
+          <option value="Responsable">Responsable (Admin)</option>
+          <option value="Associé">Associé (Admin)</option>
+        </select>
+      </div>
+      <button class="btn btn-green" style="width:100%;margin-top:10px" onclick="addLivreur()">➕ Ajouter ce livreur</button>
+      <div class="error-msg" id="add-livreur-error" style="display:none">Remplissez tous les champs.</div>
+      <div class="success-msg" id="add-livreur-ok" style="display:none;color:var(--green);font-size:.82rem;margin-top:6px;text-align:center">✅ Livreur ajouté !</div>
+    </div>
+
+    <!-- Liste livreurs actifs -->
+    <div id="livreurs-gestion-list"></div>
+  </div>
+
+  <!-- TAB 5 : RELEVÉ D'HEURES -->
+  <div class="tab-content" id="tc5">
+    <div class="month-nav"><button onclick="changeMonth(-1)">‹</button><span id="lbl-month-5">—</span><button onclick="changeMonth(1)">›</button></div>
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="stat-card green"><div class="label">Total semaine</div><div class="value" id="rh-total-semaine">0h</div></div>
+      <div class="stat-card blue"><div class="label">Jours travaillés</div><div class="value" id="rh-jours">0</div></div>
+      <div class="stat-card gold"><div class="label">Heures sup.</div><div class="value" id="rh-sup">0h</div></div>
+    </div>
+
+    <!-- Contrat -->
+    <div class="form-card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">Contrat de référence</div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-secondary btn-sm rh-contrat-btn" onclick="setContrat(35)" data-h="35">35h</button>
+          <button class="btn btn-secondary btn-sm rh-contrat-btn" onclick="setContrat(39)" data-h="39">39h</button>
+          <button class="btn btn-secondary btn-sm rh-contrat-btn" onclick="setContrat(40)" data-h="40">40h</button>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:5px;">
+          <span>Progression semaine courante</span><span id="rh-pct-label">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="rh-bar" style="width:0%"></div></div>
+        <div style="font-size:.66rem;color:var(--muted);margin-top:3px;text-align:right;" id="rh-objectif-label">Objectif : 35h</div>
+      </div>
+    </div>
+
+    <!-- Horodatage -->
+    <div class="form-card">
+      <h3>⏱️ Horodatage du jour — <em id="rh-date-label">—</em></h3>
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:14px;">Appuyez sur le bouton au moment exact de chaque étape.</p>
+
+      <!-- 5 étapes horodatage -->
+      <div id="rh-steps-list">
+        <div class="rh-step" id="step-arrivee_site">
+          <div class="step-info"><div class="step-label">Arrivée sur site</div><div class="step-time empty">Non horodaté</div></div>
+          <button class="btn-stamp" onclick="stampNow('arrivee_site')">🕐 Horodater</button>
+        </div>
+        <div class="rh-step" id="step-debut_distrib">
+          <div class="step-info"><div class="step-label">Début distribution</div><div class="step-time empty">Non horodaté</div></div>
+          <button class="btn-stamp" onclick="stampNow('debut_distrib')">🕐 Horodater</button>
+        </div>
+        <div class="rh-step" id="step-fin_distrib">
+          <div class="step-info"><div class="step-label">Fin distribution</div><div class="step-time empty">Non horodaté</div></div>
+          <button class="btn-stamp" onclick="stampNow('fin_distrib')">🕐 Horodater</button>
+        </div>
+        <div class="rh-step" id="step-arrivee_agence">
+          <div class="step-info"><div class="step-label">Arrivée agence retour</div><div class="step-time empty">Non horodaté</div></div>
+          <button class="btn-stamp" onclick="stampNow('arrivee_agence')">🕐 Horodater</button>
+        </div>
+        <div class="rh-step" id="step-fin_journee">
+          <div class="step-info"><div class="step-label">Fin de journée</div><div class="step-time empty">Non horodaté</div></div>
+          <button class="btn-stamp" onclick="stampNow('fin_journee')">🕐 Horodater</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Case arrivée tardive -->
+      <div id="rh-retard-section" style="background:rgba(255,92,92,.07);border:1px solid rgba(255,92,92,.25);border-radius:10px;padding:13px 14px;margin-bottom:14px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <input type="checkbox" id="rh-retard-check" onchange="toggleRetard()" style="width:18px;height:18px;margin-top:2px;accent-color:var(--red);flex-shrink:0;">
+          <div>
+            <div style="font-size:.86rem;font-weight:700;color:var(--red);margin-bottom:3px;">Arrivée tardive — Absence phase préparation</div>
+            <div style="font-size:.74rem;color:var(--muted);">À cocher si vous êtes arrivé après 7h00 et qu'un collègue a effectué votre préparation à votre place. <strong style="color:var(--text)">L'accès reste possible après 7h si l'agent le permet.</strong></div>
+            <div style="margin-top:7px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,92,92,.15);border-radius:6px;padding:3px 10px;">
+              <span style="font-size:.72rem;color:var(--red);font-weight:700;">Pénalité automatique si cochée : −20,00 €</span>
+            </div>
+          </div>
+        </div>
+        <!-- Désigner le collègue remplaçant -->
+        <div id="rh-remplacant-section" style="display:none;margin-top:13px;border-top:1px solid rgba(255,92,92,.2);padding-top:12px;">
+          <div style="font-size:.76rem;color:var(--muted);margin-bottom:7px;">Qui a effectué votre préparation ?</div>
+          <div class="sw"><select id="rh-remplacant">
+            <option value="">— Sélectionner le collègue —</option>
+          </select></div>
+          <div style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(46,201,138,.1);border-radius:6px;padding:3px 10px;">
+            <span style="font-size:.72rem;color:var(--green);font-weight:700;">Prime remplacement prépa +20,00 € → sera créditée au collègue sélectionné</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculs -->
+      <div class="calc-result" style="margin-bottom:8px;">
+        <span class="rl">Durée totale du jour</span>
+        <span class="rv" id="rh-live-total">—</span>
+      </div>
+      <div class="calc-result calc-orange" style="margin-bottom:14px;">
+        <span class="rl">Temps de distribution</span>
+        <span class="rv" id="rh-live-distrib">—</span>
+      </div>
+
+      <!-- Absence motif -->
+      <div class="field" style="margin-bottom:14px;">
+        <label>Absence journée complète (optionnel)</label>
+        <div class="sw"><select id="rh-absence">
+          <option value="">— Pas d'absence —</option>
+          <option value="CP">Congé payé</option>
+          <option value="Maladie">Maladie</option>
+          <option value="Sans solde">Sans solde</option>
+          <option value="Férié">Jour férié</option>
+          <option value="Formation">Formation</option>
+          <option value="Repos">Repos hebdomadaire</option>
+        </select></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveRH()">💾 Enregistrer la journée</button>
+      <div class="error-msg" id="rh-error">Veuillez horodater au moins l'arrivée sur site.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:18px;">Détail de la semaine en cours</div>
+    <div id="rh-week-detail"></div>
+    <div class="section-title" style="margin-top:18px;">Récapitulatif mensuel</div>
+    <div id="rh-month-recap"></div>
+    <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;">
+      <button class="btn btn-green" style="flex:1" onclick="sendRHWhatsApp()">📤 WhatsApp</button>
+      <button class="btn btn-secondary" style="flex:1" onclick="exportRHCSV()">⬇ Export CSV</button>
+    </div>
+  </div>
+</div>
+
+  <!-- TAB 6 : SYNTHÈSE FINANCIÈRE -->
+  <div class="tab-content" id="tc6">
+    <div class="month-nav"><button onclick="changeMonth(-1)">‹</button><span id="lbl-month-6">—</span><button onclick="changeMonth(1)">›</button></div>
+
+    <!-- Sélecteur livreur (admins) -->
+    <div id="sf-selector" style="display:none;margin-bottom:14px;">
+      <div class="form-card" style="padding:12px 15px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div style="font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;">Vue :</div>
+          <div class="sw" style="flex:1;min-width:180px;">
+            <select id="sf-livreur-select" onchange="renderSynthese()">
+              <option value="__all__">Tous les livreurs (consolidé)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solde net — carte principale -->
+    <div class="form-card" style="margin-bottom:14px;border-color:rgba(46,201,138,.25);">
+      <div style="text-align:center;padding:8px 0 14px;">
+        <div style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;" id="sf-solde-label">Solde net du mois</div>
+        <div style="font-family:'DM Mono',monospace;font-size:2.4rem;font-weight:700;" id="sf-solde">—</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:4px;">Primes − Pénalités − Indemnisations</div>
+      </div>
+    </div>
+
+    <!-- Grille financière -->
+    <div class="stats-grid" style="margin-bottom:14px;">
+      <div class="stat-card green"><div class="label">Prime quota colis</div><div class="value" id="sf-prime">0,00 €</div></div>
+      <div class="stat-card red"><div class="label">Pénalités anomalies</div><div class="value" id="sf-anom">0,00 €</div></div>
+      <div class="stat-card red"><div class="label">Indemnisations</div><div class="value" id="sf-indem">0,00 €</div></div>
+      <div class="stat-card orange"><div class="label">Pénalités retard prépa</div><div class="value" id="sf-retard">0,00 €</div></div>
+      <div class="stat-card green"><div class="label">Primes remplacement</div><div class="value" id="sf-prime-rempl">0,00 €</div></div>
+      <div class="stat-card"><div class="label">Taux réclamations</div><div class="value" id="sf-taux-recl">—</div></div>
+    </div>
+
+    <!-- Vue par livreur (admins) -->
+    <div id="sf-detail-livreurs"></div>
+
+    <!-- Tableau récap complet -->
+    <div class="section-title">Détail financier complet</div>
+    <div id="sf-tableau"></div>
+
+    <div style="display:flex;gap:8px;margin-top:18px;">
+      <button class="btn btn-secondary" style="flex:1" onclick="exportSynthèseCSV()">⬇ Export CSV</button>
+      <button class="btn btn-orange" style="flex:1" onclick="openExportExcelModal()">📊 Export Excel</button>
+    </div>
+    <div style="margin-top:8px;">
+      <button class="btn btn-purple" style="width:100%" onclick="openExportComptableModal()">📨 Export Comptable</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- MODAL EXPORT EXCEL -->
+<div class="modal-overlay" id="modal-export-excel">
+  <div class="modal">
+    <h3>📊 Export vers Excel</h3>
+    <p style="color:var(--muted);font-size:.8rem;margin-bottom:14px;">Les salaires des livreurs La Poste seront calculés automatiquement (base + primes − pénalités).</p>
+    <div class="section-title" style="margin-top:0">Carburant ce mois (€)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+      <div class="field-num"><label>Vito 1</label><input type="number" id="carb-vito1" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Vito 2</label><input type="number" id="carb-vito2" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Fiat 6m3</label><input type="number" id="carb-fiat6" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Fiat 12m3</label><input type="number" id="carb-fiat12" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Expert 1</label><input type="number" id="carb-expert1" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Expert 2</label><input type="number" id="carb-expert2" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Transit</label><input type="number" id="carb-transit" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Autre</label><input type="number" id="carb-autre" min="0" placeholder="0"></div>
+    </div>
+    <div class="calc-result" style="margin-bottom:14px;">
+      <span class="rl">Salaires inclus automatiquement</span>
+      <span class="rv" style="color:var(--green);font-size:.8rem;">✓ 5 livreurs La Poste</span>
+    </div>
+    <div class="mbtns">
+      <button class="btn btn-secondary" onclick="closeModal('modal-export-excel')">Annuler</button>
+      <button class="btn btn-orange" style="width:auto;flex:1" onclick="doExportExcel()">📊 Télécharger Excel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EXPORT COMPTABLE -->
+<div class="modal-overlay" id="modal-export-comptable">
+  <div class="modal">
+    <h3>📨 Export Comptable</h3>
+    <p style="color:var(--muted);font-size:.8rem;margin-bottom:14px;">Fichier Excel complet pour votre comptable avec toutes les charges, salaires, TVA du mois.</p>
+    <div class="fields-grid" style="margin-bottom:14px;">
+      <div class="field-num"><label>CA La Poste (€)</label><input type="number" id="compta-ca-poste" min="0" placeholder="0"></div>
+      <div class="field-num"><label>CA Chronopost (€)</label><input type="number" id="compta-ca-chrono" min="0" placeholder="0"></div>
+      <div class="field-num"><label>CA Déménagement (€)</label><input type="number" id="compta-ca-demo" min="0" placeholder="0"></div>
+      <div class="field-num"><label>TVA collectée (€)</label><input type="number" id="compta-tva" min="0" placeholder="0"></div>
+    </div>
+    <div style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:.78rem;color:var(--muted);">
+      Contenu : salaires détaillés • charges véhicules • carburant • primes & pénalités • TVA • récap mensuel comptable
+    </div>
+    <div class="mbtns">
+      <button class="btn btn-secondary" onclick="closeModal('modal-export-comptable')">Annuler</button>
+      <button class="btn btn-purple" style="width:auto;flex:1" onclick="doExportComptable()">📨 Télécharger</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-send">
+  <div class="modal" style="text-align:center;">
+    <div style="font-size:2.6rem;margin-bottom:9px;">📤</div>
+    <h3>Envoyer la synthèse</h3>
+    <p>La synthèse du jour sera envoyée sur WhatsApp.</p>
+    <div class="mbtns">
+      <button class="btn btn-secondary" onclick="closeModal('modal-send')">Annuler</button>
+      <button class="btn btn-green" onclick="sendWhatsApp()">WhatsApp</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-recl-statut">
+  <div class="modal">
+    <h3>🔒 Modifier le statut</h3>
+    <p id="modal-recl-info">Réclamation</p>
+    <div class="field"><label>Nouveau statut</label>
+      <div class="sw"><select id="modal-statut-select">
+        <option value="en_attente">En attente de clôture</option>
+        <option value="non_responsable">Non responsable</option>
+        <option value="responsable">Responsable</option>
+      </select></div>
+    </div>
+    <div class="field" id="modal-indem-wrap" style="display:none;margin-bottom:0;">
+      <label>💰 Montant indemnisation (€)</label>
+      <input type="number" id="modal-indem" min="0" step="0.01" placeholder="0.00">
+    </div>
+    <div class="mbtns">
+      <button class="btn btn-secondary" onclick="closeModal('modal-recl-statut')">Annuler</button>
+      <button class="btn btn-primary" style="width:auto;flex:1" onclick="applyStatut()">Valider</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-photo" onclick="closeModal('modal-photo')">
+  <div style="max-width:95vw;max-height:90vh;"><img id="modal-photo-img" style="max-width:100%;max-height:85vh;border-radius:10px;display:block;"></div>
+</div>
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <h3>✏️ Modifier la saisie</h3>
+    <p id="modal-edit-info" style="color:var(--muted);font-size:.8rem;margin-bottom:14px;">—</p>
+    <div class="field" style="margin-bottom:12px;"><label>Tournée réalisée</label>
+      <div class="sw"><select id="me-tournee">
+        <option value="">— Sélectionner —</option>
+        <option>Tournée 1</option><option>Tournée 2</option><option>Tournée 3</option>
+        <option>Tournée Renfort 1</option><option>Tournée Renfort 2</option>
+      </select></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div class="field-num"><label>Colis emportés</label><input type="number" id="me-emportes" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Colis livrés total</label><input type="number" id="me-livres" min="0" placeholder="0" oninput="meCalcLive()"></div>
+      <div class="field-num"><label>Dont point relais</label><input type="number" id="me-relais" min="0" placeholder="0" oninput="meCalcLive()"></div>
+      <div class="field-num"><label>Colis RD</label><input type="number" id="me-rd" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Colis avisés</label><input type="number" id="me-avis" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Colis AI</label><input type="number" id="me-ai" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Réclamations reçues</label><input type="number" id="me-recl-nb" min="0" placeholder="0"></div>
+      <div class="field-num"><label>Réclamations traitées</label><input type="number" id="me-recl-trait" min="0" placeholder="0"></div>
+    </div>
+    <div class="calc-result" style="margin-bottom:14px;">
+      <span class="rl">Livrés à l'adresse / bureau</span><span class="rv" id="me-live-calc">0</span>
+    </div>
+    <div class="error-msg" id="modal-edit-error">Veuillez sélectionner une tournée.</div>
+    <div class="mbtns">
+      <button class="btn btn-secondary" onclick="closeModal('modal-edit')">Annuler</button>
+      <button class="btn btn-primary" style="width:auto;flex:1" onclick="applyEdit()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// ⚙️ CONFIGURATION — METTEZ VOTRE URL ICI APRÈS DÉPLOIEMENT
+// ============================================================
+let SUPA_URL = 'https://hkazmdwsvksujhtrmxot.supabase.co';
+let SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrYXptZHdzdmtzdWpodHJteG90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwOTkyODEsImV4cCI6MjA5MjY3NTI4MX0.lWMjvdt_kWtwLxyDcH8BBgytrjNHWq1l6z9YzrlUvLI';
+
+const OBJECTIVE = 2600;
+const WA_NUMBER = '33646490264';
+const DEADLINE_H = 48;
+const PENALTY = {
+  'avisé_1ere':4.36,'divergence':1.76,'retour_agence':1.76,
+  'rd_rd':1.76,'rd_bal':1.76,'relais_devoye':4.36,
+  'contre_signature':4.36,'non_collecte':4.36
+};
+
+// Utilisateurs chargés dynamiquement depuis Supabase
+let USERS = [];
+let LIVREURS = [];
+
+// Chargement initial des utilisateurs depuis Supabase
+async function loadUsers(){
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/users?order=role.asc,name.asc`, {headers:SB_HEADERS});
+    if(r.ok){
+      const data = await r.json();
+      if(data && data.length > 0){
+        USERS = data.map(u=>({
+          name: u.name, pin: u.pin,
+          role: u.role, admin: u.admin||false,
+          salaire: u.salaire||1600, actif: u.actif!==false
+        })).filter(u=>u.actif);
+        LIVREURS = USERS.filter(u=>!u.admin);
+        LC.set('users_cache', USERS);
+        return true;
+      }
+    }
+  } catch(e){}
+  // Fallback cache local
+  const cached = LC.get('users_cache');
+  if(cached && cached.length > 0){
+    USERS = cached;
+    LIVREURS = USERS.filter(u=>!u.admin);
+    return true;
+  }
+  // Fallback ultime — utilisateurs IBK par défaut
+  USERS = [
+    {name:'Adama Dia',      pin:'4872', role:'Livreur',      admin:false, salaire:1600, actif:true},
+    {name:'Hicham Idir',    pin:'3159', role:'Livreur',      admin:false, salaire:1800, actif:true},
+    {name:'Nestor Kouam',   pin:'7426', role:'Livreur',      admin:false, salaire:1800, actif:true},
+    {name:'Mamadou Ndoye',  pin:'5803', role:'Livreur',      admin:false, salaire:1800, actif:true},
+    {name:'Bili Fontaine',  pin:'9341', role:'Livreur',      admin:false, salaire:1600, actif:true},
+    {name:'Olivier Flocan', pin:'6217', role:'Livreur',      admin:false, salaire:1600, actif:true},
+    {name:'Soriba Dramé',   pin:'1584', role:'Livreur',      admin:false, salaire:1600, actif:true},
+    {name:'Houdou Dia',     pin:'2963', role:'Responsable',  admin:true,  salaire:0,    actif:true},
+    {name:'Ibrahim Kondo',  pin:'7510', role:'Associé',      admin:true,  salaire:0,    actif:true},
+  ];
+  LIVREURS = USERS.filter(u=>!u.admin);
+  return false;
+}
+
+let CU=null, monthOffset=0;
+let photos={flash:null,fdr:null,attest:null};
+let editRecl={id:null,type:null,owner:null};
+let editCtx={date:null,user:null};
+
+// Cache local — fallback si réseau indisponible
+const LC = {
+  get:(k)=>{try{return JSON.parse(localStorage.getItem(k))||null;}catch{return null;}},
+  set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),
+  del:(k)=>localStorage.removeItem(k)
+};
+
+// ============================================================
+// API — Supabase REST
+// ============================================================
+const SB_HEADERS = {
+  'Content-Type':'application/json',
+  'apikey': SUPA_KEY,
+  'Authorization': `Bearer ${SUPA_KEY}`,
+  'Prefer': 'return=representation'
+};
+
+async function sbGet(table, params=''){
+  setSyncState('syncing','Synchronisation…');
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/${table}?${params}`,{headers:SB_HEADERS});
+    if(!r.ok) throw new Error(await r.text());
+    const d=await r.json();
+    setSyncState('ok','Synchronisé ✓');
+    return{ok:true,data:d};
+  }catch(e){setSyncState('error','Hors ligne — données locales');return{ok:false,error:e.message};}
+}
+
+async function sbUpsert(table, obj){
+  setSyncState('syncing','Synchronisation…');
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/${table}`,{
+      method:'POST',
+      headers:{...SB_HEADERS,'Prefer':'resolution=merge-duplicates,return=representation'},
+      body:JSON.stringify(obj)
+    });
+    if(!r.ok) throw new Error(await r.text());
+    setSyncState('ok','Synchronisé ✓');
+    return{ok:true};
+  }catch(e){setSyncState('error','Hors ligne — données locales');return{ok:false,error:e.message};}
+}
+
+async function sbDelete(table, id){
+  setSyncState('syncing','Synchronisation…');
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`,{
+      method:'DELETE',headers:SB_HEADERS
+    });
+    if(!r.ok) throw new Error(await r.text());
+    setSyncState('ok','Synchronisé ✓');
+    return{ok:true};
+  }catch(e){setSyncState('error','Hors ligne — données locales');return{ok:false,error:e.message};}
+}
+
+function setSyncState(state,text){
+  const bar=document.getElementById('sync-bar');
+  const dot=document.getElementById('sync-dot');
+  const txt=document.getElementById('sync-text');
+  if(!CU){bar.style.display='none';return;}
+  bar.style.display='flex';
+  dot.className='sync-dot'+(state==='syncing'?' syncing':state==='error'?' error':'');
+  txt.textContent=text;
+}
+
+// ============================================================
+// STORAGE — Hybride local + Supabase
+// ============================================================
+function ym(off=0){const d=new Date();d.setMonth(d.getMonth()+off);return{y:d.getFullYear(),m:d.getMonth()+1};}
+function ymStr(off=0){const{y,m}=ym(off);return`${y}-${String(m).padStart(2,'0')}`;}
+function mlbl(y,m){return new Date(y,m-1,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});}
+function today(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)+Math.random().toString(36).slice(2,5);}
+function expired(ts){return ts&&(Date.now()-ts)>DEADLINE_H*3600000;}
+function fdate(s){try{return new Date(s+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}catch{return s||'—';}}
+function hLeft(ts){return Math.max(0,Math.round(DEADLINE_H-(Date.now()-ts)/3600000));}
+function fmt2(n){return Number(n).toFixed(2);}
+
+// Clés cache local
+const ek=(u,ym)=>`e_${u.replace(/\s+/g,'_')}_${ym}`;
+const rk=u=>`r_${u.replace(/\s+/g,'_')}`;
+const ak=u=>`a_${u.replace(/\s+/g,'_')}`;
+
+async function loadEntries(user, ymkey){
+  const r=await sbGet('livraisons',`user_name=eq.${user.replace(/ /g,'%20')}&year_month=eq.${ymkey}&order=date.asc`);
+  if(r.ok&&r.data){LC.set(ek(user,ymkey),r.data);return r.data;}
+  return LC.get(ek(user,ymkey))||[];
+}
+
+async function loadAllEntries(ymkey){
+  const r=await sbGet('livraisons',`year_month=eq.${ymkey}&order=date.asc`);
+  if(r.ok&&r.data) return r.data;
+  let all=[];USERS.forEach(u=>{const d=LC.get(ek(u.name,ymkey));if(d)all=[...all,...d];});return all;
+}
+
+async function saveEntryRemote(user,entry){
+  const ymkey=entry.date.slice(0,7);
+  const obj={id:entry.id,user_name:user,year_month:ymkey,date:entry.date,
+    tournee:entry.tournee,emportes:entry.emportes,livres:entry.livres,
+    relais:entry.relais,adresse:entry.adresse,rd:entry.rd,avis:entry.avis,ai:entry.ai,
+    recl_nb:entry.reclNb,recl_trait:entry.reclTrait,modified:entry.modified||null,ts:entry.ts};
+  let entries=LC.get(ek(user,ymkey))||[];
+  const idx=entries.findIndex(e=>e.id===entry.id);
+  if(idx>=0)entries[idx]=entry;else entries.push(entry);
+  entries.sort((a,b)=>a.date.localeCompare(b.date));
+  LC.set(ek(user,ymkey),entries);
+  await sbUpsert('livraisons',obj);
+}
+
+async function loadRecl(user, all=false){
+  let r;
+  if(all) r=await sbGet('reclamations','order=ts.desc');
+  else r=await sbGet('reclamations',`owner=eq.${user.replace(/ /g,'%20')}&order=ts.desc`);
+  if(r.ok&&r.data){
+    // Convertir snake_case → camelCase
+    const mapped=r.data.map(mapRecl);
+    if(!all) LC.set(rk(user),mapped);
+    return mapped;
+  }
+  if(all){let all2=[];USERS.forEach(u=>{const d=LC.get(rk(u.name));if(d)all2=[...all2,...d];});return all2;}
+  return LC.get(rk(user))||[];
+}
+
+function mapRecl(r){
+  return{id:r.id,owner:r.owner,nom:r.nom,adresse:r.adresse,dateLivr:r.date_livr,
+    col:r.col,motif:r.motif,objet:r.objet,statut:r.statut,indem:r.indem,
+    photoAttest:r.photo_attest,ts:r.ts,type:r.type,livreur:r.livreur};
+}
+
+async function saveReclRemote(recl){
+  const obj={id:recl.id,owner:recl.owner,nom:recl.nom,adresse:recl.adresse,
+    date_livr:recl.dateLivr,col:recl.col,motif:recl.motif,objet:recl.objet,
+    statut:recl.statut,indem:recl.indem||0,photo_attest:recl.photoAttest||'',
+    ts:recl.ts,type:recl.type,livreur:recl.livreur||''};
+  let list=LC.get(rk(recl.owner))||[];
+  const idx=list.findIndex(r=>r.id===recl.id);
+  if(idx>=0)list[idx]=recl;else list.push(recl);
+  LC.set(rk(recl.owner),list);
+  await sbUpsert('reclamations',obj);
+}
+
+async function deleteReclRemote(id,owner){
+  if(owner){let list=LC.get(rk(owner))||[];LC.set(rk(owner),list.filter(r=>r.id!==id));}
+  await sbDelete('reclamations',id);
+}
+
+async function loadAnom(user, all=false){
+  let r;
+  if(all) r=await sbGet('anomalies','order=date.desc');
+  else r=await sbGet('anomalies',`livreur=eq.${user.replace(/ /g,'%20')}&order=date.desc`);
+  if(r.ok&&r.data){
+    const mapped=r.data.map(a=>({id:a.id,livreur:a.livreur,date:a.date,
+      categorie:a.categorie,label:a.label,col:a.col,comment:a.comment,
+      penalty:a.penalty,ts:a.ts,saisie:a.saisie}));
+    if(!all) LC.set(ak(user),mapped);
+    return mapped;
+  }
+  if(all){let all2=[];LIVREURS.forEach(u=>{const d=LC.get(ak(u.name));if(d)all2=[...all2,...d];});return all2;}
+  return LC.get(ak(user))||[];
+}
+
+async function saveAnomRemote(anom){
+  const obj={id:anom.id,livreur:anom.livreur,date:anom.date,categorie:anom.categorie,
+    label:anom.label,col:anom.col||'',comment:anom.comment||'',
+    penalty:anom.penalty,ts:anom.ts,saisie:anom.saisie};
+  let list=LC.get(ak(anom.livreur))||[];
+  const idx=list.findIndex(a=>a.id===anom.id);
+  if(idx>=0)list[idx]=anom;else list.push(anom);
+  LC.set(ak(anom.livreur),list);
+  await sbUpsert('anomalies',obj);
+}
+
+async function deleteAnomRemote(id,livreur){
+  let list=LC.get(ak(livreur))||[];LC.set(ak(livreur),list.filter(a=>a.id!==id));
+  await sbDelete('anomalies',id);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function populateSelects(){
+  const sel=document.getElementById('login-name');
+  sel.innerHTML='<option value="">— Sélectionner —</option>';
+  USERS.forEach(u=>{const o=document.createElement('option');o.value=u.name;o.textContent=u.name;sel.appendChild(o);});
+  ['rof-livreur','af-livreur','admin-edit-livreur'].forEach(id=>{
+    const s=document.getElementById(id);if(!s)return;
+    s.innerHTML='<option value="">— Sélectionner —</option>';
+    LIVREURS.forEach(u=>{const o=document.createElement('option');o.value=u.name;o.textContent=u.name;s.appendChild(o);});
+  });
+  document.getElementById('af-date').value=today();
+}
+
+window.onload=async()=>{
+  // Afficher indicateur de chargement dans le sélecteur
+  const sel=document.getElementById('login-name');
+  sel.innerHTML='<option value="">Chargement...</option>';
+  // Charger les utilisateurs depuis Supabase
+  await loadUsers();
+  // Remplir tous les sélecteurs
+  populateSelects();
+};
+
+// ============================================================
+// LOGIN / LOGOUT
+// ============================================================
+function doLogin(){
+  const name=document.getElementById('login-name').value;
+  const pin=document.getElementById('login-pin').value;
+  const u=USERS.find(u=>u.name===name&&u.pin===pin);
+  if(!u){document.getElementById('login-error').style.display='block';return;}
+  document.getElementById('login-error').style.display='none';
+  CU=u; monthOffset=0;
+  document.getElementById('screen-login').classList.remove('active');
+  document.getElementById('screen-dashboard').classList.add('active');
+  setupDash();
+}
+document.getElementById('login-pin').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function logout(){
+  CU=null;photos={flash:null,fdr:null,attest:null};
+  document.getElementById('login-pin').value='';
+  document.getElementById('login-name').value='';
+  document.getElementById('header-actions').innerHTML='';
+  document.querySelector('.admin-tab').style.display='none';
+  document.getElementById('sync-bar').style.display='none';
+  switchTab(0);
+  document.getElementById('screen-dashboard').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function setupDash(){
+  document.getElementById('user-avatar').textContent=CU.name.charAt(0);
+  document.getElementById('user-name-badge').textContent=CU.name;
+  document.getElementById('user-role-badge').textContent=CU.role;
+  document.getElementById('header-actions').innerHTML=`<button class="btn btn-secondary btn-sm" onclick="logout()">Déconnexion</button>`;
+  if(CU.admin){
+    document.querySelector('.admin-tab').style.display='';
+    document.querySelector('.synth-tab').style.display='';
+    document.getElementById('recl-office-section').style.display='';
+    document.getElementById('anom-form-section').style.display='';
+    document.getElementById('rf-statut').disabled=false;
+    document.getElementById('rf-indem').disabled=false;
+  } else {
+    document.querySelector('.admin-tab').style.display='none';
+    document.querySelector('.synth-tab').style.display='none';
+    document.getElementById('recl-office-section').style.display='none';
+    document.getElementById('anom-form-section').style.display='none';
+    document.getElementById('rf-statut').disabled=true;
+    document.getElementById('rf-indem').disabled=true;
+  }
+  updateLabels();
+  await renderSaisie();
+  renderHist();
+  renderRecl();
+  renderAnom();
+  renderRH();
+  if(CU.admin) renderAdmin();
+  checkReminder();
+}
+
+function switchTab(idx){
+  // Active le bon onglet par data-tab, pas par position DOM
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.toggle('active', parseInt(t.dataset.tab)===idx);
+  });
+  document.querySelectorAll('.tab-content').forEach((c,i)=>c.classList.toggle('active',i===idx));
+  if(idx===4) renderAdmin();
+  if(idx===2) renderRecl();
+  if(idx===3) renderAnom();
+  if(idx===1) renderHist();
+  if(idx===5) renderRH();
+  if(idx===6) renderSynthese();
+}
+
+async function changeMonth(d){
+  monthOffset+=d; updateLabels();
+  await renderSaisie();
+  renderHist();
+  renderRH();
+  if(CU&&CU.admin){renderAdmin();adminShowHist();}
+}
+
+function updateLabels(){
+  const{y,m}=ym(monthOffset);const l=mlbl(y,m);
+  ['lbl-month-0','lbl-month-1','lbl-month-4'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=l;});
+}
+
+// ============================================================
+// SAISIE
+// ============================================================
+const PRIME_PAR_COLIS = 0.50; // EUR par colis adresse au-delà du seuil
+const TAUX_RECL_SEUIL = 15;   // pour 10 000 colis emportés
+const TAUX_RECL_PENALITE = 0.05; // 5% des colis livrés retirés du cumul
+
+function calcTotals(entries, reclamations){
+  let livres=0,relais=0,rd=0,avis=0,ai=0,emportes=0;
+  entries.forEach(e=>{
+    livres+=Number(e.livres)||0;
+    relais+=Number(e.relais)||0;
+    rd+=Number(e.rd)||0;
+    avis+=Number(e.avis)||0;
+    ai+=Number(e.ai)||0;
+    emportes+=Number(e.emportes)||0;
+  });
+
+  // Taux de réclamations
+  const nbRecl = reclamations ? reclamations.filter(r=>r.type!=='office').length : 0;
+  const tauxRecl = emportes>0 ? (nbRecl/emportes)*10000 : 0;
+  const penaliteRecl = tauxRecl > TAUX_RECL_SEUIL;
+  const livresAjustes = penaliteRecl ? Math.floor(livres*(1-TAUX_RECL_PENALITE)) : livres;
+
+  // Calcul colis prime (0.50€ par colis adresse au-delà du seuil)
+  let colisAdressePrime = 0;
+  let primeMontant = 0;
+  if(livresAjustes >= OBJECTIVE){
+    let cum=0;
+    entries.forEach(e=>{
+      const prev=cum; cum+=Number(e.livres)||0;
+      const cumAj = penaliteRecl ? Math.floor(cum*(1-TAUX_RECL_PENALITE)) : cum;
+      const prevAj = penaliteRecl ? Math.floor(prev*(1-TAUX_RECL_PENALITE)) : prev;
+      if(cumAj>OBJECTIVE){
+        const dep=cumAj-Math.max(OBJECTIVE,prevAj);
+        const rat=(Number(e.livres)>0)?((Number(e.livres)-(Number(e.relais)||0))/Number(e.livres)):0;
+        colisAdressePrime+=Math.round(dep*rat);
+      }
+    });
+    primeMontant = colisAdressePrime * PRIME_PAR_COLIS;
+  }
+
+  return{
+    livres, relais, adresse:livres-relais, rd, avis, ai, emportes,
+    livresAjustes, penaliteRecl, tauxRecl: Math.round(tauxRecl*100)/100,
+    nbRecl, colisAdressePrime, primeMontant
+  };
+}
+
+async function renderSaisie(){
+  if(!CU)return;
+  const ymkey=ymStr(monthOffset);
+  const entries=await loadEntries(CU.name,ymkey);
+  const recl=LC.get(rk(CU.name))||[];
+  const T=calcTotals(entries,recl);
+  ['s-total','s-relais','s-adresse','s-rd','s-avis','s-ai'].forEach((id,i)=>{
+    document.getElementById(id).textContent=[T.livres,T.relais,T.adresse,T.rd,T.avis,T.ai][i];
+  });
+  // Objectif avec ajustement taux réclamations
+  const livresAffiche = T.penaliteRecl ? T.livresAjustes : T.livres;
+  const pct=Math.min(100,Math.round(livresAffiche/OBJECTIVE*100));
+  document.getElementById('obj-current').textContent=`${livresAffiche} / ${OBJECTIVE}${T.penaliteRecl?' (ajusté)':''}`;
+  document.getElementById('obj-bar').style.width=pct+'%';
+  const qi=document.getElementById('quota-info'),qs=document.getElementById('quota-stats');
+
+  let infoHtml='';
+  if(T.penaliteRecl){
+    infoHtml+=`<div style="background:rgba(255,92,92,.1);border:1px solid rgba(255,92,92,.25);border-radius:7px;padding:7px 11px;margin-top:7px;font-size:.72rem;color:var(--red);">
+      ⚠️ Taux réclamations ${T.tauxRecl}/10 000 &gt; seuil de ${TAUX_RECL_SEUIL} — Pénalité −5% appliquée (${T.livres} → ${T.livresAjustes} colis)
+    </div>`;
+  }
+  if(T.livresAjustes>=OBJECTIVE){
+    document.getElementById('s-prime').textContent=T.colisAdressePrime;qs.style.display='';
+    infoHtml+=`<div class="quota-badge">⭐ ${T.colisAdressePrime} colis prime — ${T.primeMontant.toFixed(2)} €</div>`;
+  } else {
+    qs.style.display='none';
+    infoHtml+=`<div style="font-size:.68rem;color:var(--muted);margin-top:7px;">Manque ${OBJECTIVE-livresAffiche} colis pour la prime</div>`;
+  }
+  qi.innerHTML=infoHtml;
+  document.getElementById('form-date-label').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+}
+
+function calcLive(){
+  document.getElementById('live-calc').textContent=Math.max(0,(parseInt(document.getElementById('f-livres').value)||0)-(parseInt(document.getElementById('f-relais').value)||0));
+}
+function calcReclLive(){
+  document.getElementById('live-recl-reste').textContent=Math.max(0,(parseInt(document.getElementById('f-recl-nb').value)||0)-(parseInt(document.getElementById('f-recl-trait').value)||0));
+}
+function loadPhoto(input,prevId,key){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{photos[key]=e.target.result;const img=document.getElementById(prevId);img.src=e.target.result;img.style.display='block';};
+  reader.readAsDataURL(file);
+}
+
+async function saveEntry(){
+  const tournee=document.getElementById('form-tournee').value;
+  if(!tournee){document.getElementById('form-error').style.display='block';return;}
+  document.getElementById('form-error').style.display='none';
+  const ymkey=ymStr(monthOffset);
+  const entries=LC.get(ek(CU.name,ymkey))||[];
+  const t=today();
+  const existing=entries.find(e=>e.date===t);
+  const livres=parseInt(document.getElementById('f-livres').value)||0;
+  const relais=parseInt(document.getElementById('f-relais').value)||0;
+  const entry={
+    id: existing?existing.id:uid(),
+    user:CU.name, date:t, tournee,
+    emportes:parseInt(document.getElementById('f-emportes').value)||0,
+    livres, relais, adresse:livres-relais,
+    rd:parseInt(document.getElementById('f-rd').value)||0,
+    avis:parseInt(document.getElementById('f-avis').value)||0,
+    ai:parseInt(document.getElementById('f-ai').value)||0,
+    reclNb:parseInt(document.getElementById('f-recl-nb').value)||0,
+    reclTrait:parseInt(document.getElementById('f-recl-trait').value)||0,
+    photoFlash:photos.flash||'', photoFdr:photos.fdr||'',
+    ts:Date.now()
+  };
+  await saveEntryRemote(CU.name,entry);
+  await renderSaisie();
+  renderHist();
+  const btn=event.target;const orig=btn.textContent;
+  btn.textContent='✓ Enregistré !';btn.style.background='var(--green)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2000);
+}
+
+// ============================================================
+// HISTORIQUE
+// ============================================================
+async function renderHist(targetUser){
+  const who=targetUser||CU.name;
+  if(!CU)return;
+  const ymkey=ymStr(monthOffset);
+  const entries=await loadEntries(who,ymkey);
+  const cont=document.getElementById('hist-content');
+  if(!entries.length){cont.innerHTML=`<div style="text-align:center;padding:32px;color:var(--muted);font-size:.8rem;">Aucune saisie ce mois-ci.</div>`;return;}
+  const T=calcTotals(entries);
+  let html=`<div class="hist-table-wrap"><table><thead><tr>
+    <th>Date</th><th>Tournée</th><th>Emportés</th><th>Livrés</th><th>Relais</th><th>Adresse</th><th>RD</th><th>Avisés</th><th>AI</th><th>Récl.</th><th></th>
+  </tr></thead><tbody>`;
+  let cum=0;
+  entries.forEach(e=>{
+    const prev=cum;cum+=Number(e.livres)||0;
+    const ds=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    const modif=e.modified?'<span style="color:var(--ibk-orange);font-size:.6rem;"> ✎</span>':'';
+    html+=`<tr><td>${ds}${prev>=OBJECTIVE?'<span class="tag tag-quota">★</span>':''}${modif}</td>
+      <td style="font-size:.7rem">${e.tournee||'—'}</td><td>${Number(e.emportes)||0}</td><td>${Number(e.livres)||0}</td>
+      <td>${Number(e.relais)||0}</td><td style="color:var(--ibk-light-blue)">${Number(e.adresse)||0}</td>
+      <td style="color:var(--red)">${Number(e.rd)||0}</td><td>${Number(e.avis)||0}</td>
+      <td style="color:var(--red)">${Number(e.ai)||0}</td><td style="color:var(--orange)">${Number(e.reclNb)||0}</td>
+      <td><button class="btn btn-secondary btn-sm" style="padding:4px 8px;font-size:.65rem;" onclick="openEditModal('${e.date}','${who}')">✏️</button></td></tr>`;
+  });
+  html+=`<tr style="background:var(--navy3);font-weight:700;"><td colspan="2">TOTAL</td>
+    <td>${entries.reduce((s,e)=>s+(Number(e.emportes)||0),0)}</td>
+    <td style="color:var(--green)">${T.livres}</td><td>${T.relais}</td>
+    <td style="color:var(--ibk-light-blue)">${T.adresse}</td><td style="color:var(--red)">${T.rd}</td>
+    <td>${T.avis}</td><td style="color:var(--red)">${T.ai}</td>
+    <td style="color:var(--orange)">${entries.reduce((s,e)=>s+(Number(e.reclNb)||0),0)}</td><td></td>
+  </tr></tbody></table></div>`;
+  cont.innerHTML=html;
+}
+
+// ============================================================
+// MODIFICATION SAISIE
+// ============================================================
+async function openEditModal(date,user){
+  const ymkey=date.slice(0,7);
+  const entries=LC.get(ek(user,ymkey))||[];
+  const e=entries.find(e=>e.date===date);
+  if(!e)return;
+  editCtx={date,user};
+  const ds=new Date(date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('modal-edit-info').textContent=`${user} — ${ds}`;
+  document.getElementById('me-tournee').value=e.tournee||'';
+  document.getElementById('me-emportes').value=Number(e.emportes)||0;
+  document.getElementById('me-livres').value=Number(e.livres)||0;
+  document.getElementById('me-relais').value=Number(e.relais)||0;
+  document.getElementById('me-rd').value=Number(e.rd)||0;
+  document.getElementById('me-avis').value=Number(e.avis)||0;
+  document.getElementById('me-ai').value=Number(e.ai)||0;
+  document.getElementById('me-recl-nb').value=Number(e.reclNb)||0;
+  document.getElementById('me-recl-trait').value=Number(e.reclTrait)||0;
+  document.getElementById('me-live-calc').textContent=Math.max(0,(Number(e.livres)||0)-(Number(e.relais)||0));
+  document.getElementById('modal-edit-error').style.display='none';
+  document.getElementById('modal-edit').classList.add('active');
+}
+function meCalcLive(){
+  document.getElementById('me-live-calc').textContent=Math.max(0,(parseInt(document.getElementById('me-livres').value)||0)-(parseInt(document.getElementById('me-relais').value)||0));
+}
+async function applyEdit(){
+  const tournee=document.getElementById('me-tournee').value;
+  if(!tournee){document.getElementById('modal-edit-error').style.display='block';return;}
+  document.getElementById('modal-edit-error').style.display='none';
+  const ymkey=editCtx.date.slice(0,7);
+  const entries=LC.get(ek(editCtx.user,ymkey))||[];
+  const idx=entries.findIndex(e=>e.date===editCtx.date);
+  if(idx<0){closeModal('modal-edit');return;}
+  const old=entries[idx];
+  const livres=parseInt(document.getElementById('me-livres').value)||0;
+  const relais=parseInt(document.getElementById('me-relais').value)||0;
+  const updated={...old,tournee,
+    emportes:parseInt(document.getElementById('me-emportes').value)||0,
+    livres,relais,adresse:livres-relais,
+    rd:parseInt(document.getElementById('me-rd').value)||0,
+    avis:parseInt(document.getElementById('me-avis').value)||0,
+    ai:parseInt(document.getElementById('me-ai').value)||0,
+    reclNb:parseInt(document.getElementById('me-recl-nb').value)||0,
+    reclTrait:parseInt(document.getElementById('me-recl-trait').value)||0,
+    modified:Date.now()
+  };
+  await saveEntryRemote(editCtx.user,updated);
+  closeModal('modal-edit');
+  if(editCtx.user===CU.name) await renderSaisie();
+  renderHist(editCtx.user);
+  if(CU.admin){renderAdmin();adminShowHist();}
+}
+
+// ============================================================
+// RÉCLAMATIONS
+// ============================================================
+function toggleIndem(){
+  document.getElementById('indem-field').style.display=document.getElementById('rf-objet').value==='Objet perdu'?'':'none';
+}
+async function saveReclamation(){
+  const nom=document.getElementById('rf-nom').value.trim();
+  const adr=document.getElementById('rf-adresse').value.trim();
+  const datL=document.getElementById('rf-date-livr').value;
+  const col=document.getElementById('rf-col').value.trim();
+  const motif=document.getElementById('rf-motif').value;
+  const objet=document.getElementById('rf-objet').value;
+  const statut=CU.admin?document.getElementById('rf-statut').value:'en_attente';
+  const indem=CU.admin&&objet==='Objet perdu'?parseFloat(document.getElementById('rf-indem').value)||0:0;
+  if(!nom||!adr||!datL||!col||!motif){document.getElementById('recl-form-error').style.display='block';return;}
+  document.getElementById('recl-form-error').style.display='none';
+  const recl={id:uid(),owner:CU.name,nom,adresse:adr,dateLivr:datL,col,motif,objet,statut,indem,photoAttest:photos.attest||'',ts:Date.now(),type:'perso',livreur:''};
+  await saveReclRemote(recl);
+  ['rf-nom','rf-adresse','rf-date-livr','rf-col','rf-indem'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rf-motif').value='';document.getElementById('rf-objet').value='';document.getElementById('rf-statut').value='en_attente';
+  document.getElementById('indem-field').style.display='none';
+  document.getElementById('prev-attest').style.display='none';photos.attest=null;
+  await renderRecl();checkReminder();
+}
+async function saveReclOffice(){
+  const livreur=document.getElementById('rof-livreur').value;
+  const nom=document.getElementById('rof-nom').value.trim();
+  const adr=document.getElementById('rof-adresse').value.trim();
+  const datL=document.getElementById('rof-date-livr').value;
+  const col=document.getElementById('rof-col').value.trim();
+  const motif=document.getElementById('rof-motif').value;
+  const objet=document.getElementById('rof-objet').value;
+  const indem=parseFloat(document.getElementById('rof-indem').value)||0;
+  if(!livreur||!nom||!adr||!datL||!col||!motif){document.getElementById('rof-form-error').style.display='block';return;}
+  document.getElementById('rof-form-error').style.display='none';
+  const recl={id:uid(),owner:'__office__',nom,adresse:adr,dateLivr:datL,col,motif,objet,indem,statut:'responsable',ts:Date.now(),type:'office',livreur};
+  await saveReclRemote(recl);
+  ['rof-nom','rof-adresse','rof-date-livr','rof-col','rof-indem'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('rof-livreur').value='';document.getElementById('rof-motif').value='';document.getElementById('rof-objet').value='';
+  await renderRecl();
+}
+
+function statusBadge(r){
+  const eff=r.statut==='en_attente'&&expired(r.ts)?'responsable':r.statut;
+  if(eff==='non_responsable')return`<span class="recl-status s-nonresp">✓ Non responsable</span>`;
+  if(eff==='responsable')return`<span class="recl-status s-resp">✗ Responsable${r.statut==='en_attente'?' (expiré)':''}</span>`;
+  return`<span class="recl-status s-pending">⏳ En attente (${hLeft(r.ts)}h)</span>`;
+}
+function cardClass(r){
+  const eff=r.statut==='en_attente'&&expired(r.ts)?'responsable':r.statut;
+  if(eff==='non_responsable')return'snr';if(eff==='responsable')return'sr';return'sp';
+}
+function reclCardHtml(r,showAdmin,isOffice){
+  const attest=r.photoAttest?`<img src="${r.photoAttest}" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;margin-top:9px;cursor:pointer;" onclick="viewPhoto('${r.photoAttest}')">`:'' ;
+  const adminBtn=showAdmin?`<button class="btn btn-secondary btn-sm" onclick="openStatutModal('${r.id}','${r.owner}','${r.nom.replace(/'/g,"\\'")}','${r.objet||''}')">✏️ Statut</button>`:'';
+  const indemHtml=r.indem>0?`<span class="dk">Indemnisation</span><span class="dv"><span class="indem-badge">💰 ${fmt2(r.indem)} €</span></span>`:'';
+  const offLiv=isOffice&&r.livreur?`<span class="dk">Livreur</span><span class="dv">${r.livreur}</span>`:'';
+  return`<div class="recl-card ${cardClass(r)}">
+    <div class="recl-head"><div class="rmeta"><strong>${r.nom}</strong><span>${r.adresse}</span></div>${statusBadge(r)}</div>
+    <div class="recl-details">
+      <span class="dk">Date livraison</span><span class="dv">${fdate(r.dateLivr)}</span>
+      <span class="dk">N° COL</span><span class="dv">${r.col||'—'}</span>
+      <span class="dk">Motif</span><span class="dv">${r.motif||'—'}</span>
+      <span class="dk">Objet</span><span class="dv">${r.objet||'—'}</span>
+      ${indemHtml}${offLiv}
+    </div>
+    ${attest}
+    <div class="recl-actions" style="margin-top:9px;">
+      ${adminBtn}
+      <button class="btn btn-danger btn-sm" onclick="deleteReclUI('${r.id}','${r.owner}')">🗑</button>
+    </div>
+  </div>`;
+}
+
+async function renderRecl(){
+  if(!CU)return;
+  // Expire check
+  const myList=await loadRecl(CU.name);
+  let changed=false;
+  myList.forEach(r=>{if(r.statut==='en_attente'&&expired(r.ts)){r.statut='responsable';changed=true;}});
+  if(changed){LC.set(rk(CU.name),myList);myList.forEach(r=>{if(r.modified2)api({action:'saveRecl',recl:r});});}
+  const offAll=await loadRecl('__office__',true);
+  const myOff=offAll.filter(r=>r.type==='office'&&r.livreur===CU.name);
+  const att=myList.filter(r=>r.statut==='en_attente'&&!expired(r.ts)).length;
+  const nr=myList.filter(r=>r.statut==='non_responsable').length;
+  const re=myList.filter(r=>r.statut==='responsable'||(r.statut==='en_attente'&&expired(r.ts))).length+myOff.length;
+  document.getElementById('rs-att').textContent=att;
+  document.getElementById('rs-nr').textContent=nr;
+  document.getElementById('rs-re').textContent=re;
+  const cont=document.getElementById('recl-list');
+  cont.innerHTML=myList.length?myList.slice().reverse().map(r=>reclCardHtml(r,CU.admin,false)).join('')
+    :`<div style="text-align:center;padding:26px;color:var(--muted);font-size:.8rem;">Aucune réclamation.</div>`;
+  if(!CU.admin&&myOff.length){
+    cont.innerHTML+=`<div class="section-title" style="margin-top:18px;">⚡ Réclamations d'office vous concernant</div>`;
+    cont.innerHTML+=myOff.slice().reverse().map(r=>reclCardHtml(r,false,true)).join('');
+  }
+  if(CU.admin){
+    const offList=offAll.filter(r=>r.type==='office');
+    document.getElementById('recl-office-list').innerHTML=offList.length
+      ?offList.slice().reverse().map(r=>reclCardHtml(r,true,true)).join('')
+      :`<div style="text-align:center;padding:22px;color:var(--muted);font-size:.78rem;">Aucune réclamation d'office.</div>`;
+  }
+}
+async function deleteReclUI(id,owner){
+  if(!confirm('Supprimer cette réclamation ?'))return;
+  await deleteReclRemote(id,owner);
+  await renderRecl();checkReminder();
+}
+function openStatutModal(id,owner,nom,objet){
+  editRecl={id,owner};
+  document.getElementById('modal-recl-info').textContent=`Réclamation de ${nom}`;
+  const list=LC.get(rk(owner))||[];
+  const r=list.find(r=>r.id===id);
+  if(r){document.getElementById('modal-statut-select').value=r.statut;document.getElementById('modal-indem').value=r.indem||'';}
+  document.getElementById('modal-indem-wrap').style.display=objet==='Objet perdu'?'':'none';
+  document.getElementById('modal-recl-statut').classList.add('active');
+}
+async function applyStatut(){
+  const s=document.getElementById('modal-statut-select').value;
+  const indem=parseFloat(document.getElementById('modal-indem').value)||0;
+  const list=LC.get(rk(editRecl.owner))||[];
+  const r=list.find(r=>r.id===editRecl.id);
+  if(r){r.statut=s;r.indem=indem;LC.set(rk(editRecl.owner),list);await api({action:'saveRecl',recl:r});}
+  closeModal('modal-recl-statut');await renderRecl();
+}
+function checkReminder(){
+  if(!CU)return;
+  const list=LC.get(rk(CU.name))||[];
+  const pending=list.filter(r=>r.statut==='en_attente'&&!expired(r.ts));
+  const rem=document.getElementById('recl-reminder');
+  if(pending.length){document.getElementById('recl-reminder-text').textContent=`${pending.length} réclamation(s) en attente — délai 48h en cours.`;rem.style.display='flex';}
+  else rem.style.display='none';
+}
+
+// ============================================================
+// ANOMALIES
+// ============================================================
+function updatePenalty(){
+  const sel=document.getElementById('af-categorie');
+  const p=sel.options[sel.selectedIndex]?.dataset?.p;
+  document.getElementById('live-penalty').textContent=p?`${p} €`:'—';
+}
+async function saveAnomalie(){
+  const livreur=document.getElementById('af-livreur').value;
+  const date=document.getElementById('af-date').value;
+  const cat=document.getElementById('af-categorie').value;
+  const col=document.getElementById('af-col').value.trim();
+  const comment=document.getElementById('af-comment').value.trim();
+  if(!livreur||!date||!cat){document.getElementById('anom-form-error').style.display='block';return;}
+  document.getElementById('anom-form-error').style.display='none';
+  const pen=PENALTY[cat]||0;
+  const label=document.getElementById('af-categorie').options[document.getElementById('af-categorie').selectedIndex].text;
+  const anom={id:uid(),livreur,date,categorie:cat,label,col,comment,penalty:pen,ts:Date.now(),saisie:CU.name};
+  await saveAnomRemote(anom);
+  document.getElementById('af-livreur').value='';document.getElementById('af-col').value='';
+  document.getElementById('af-comment').value='';document.getElementById('af-categorie').value='';
+  document.getElementById('live-penalty').textContent='—';document.getElementById('af-date').value=today();
+  await renderAnom();if(CU.admin)renderAdmin();
+}
+async function renderAnom(){
+  if(!CU)return;
+  let myA,allA;
+  if(CU.admin){
+    allA=await loadAnom('',true);
+    allA.sort((a,b)=>b.date.localeCompare(a.date));
+    const{y,m}=ym(monthOffset);
+    const monthA=allA.filter(a=>a.date&&a.date.startsWith(`${y}-${String(m).padStart(2,'0')}`));
+    document.getElementById('as-total').textContent=allA.length;
+    document.getElementById('as-penalty').textContent=fmt2(allA.reduce((s,a)=>s+Number(a.penalty),0));
+    document.getElementById('as-month').textContent=monthA.length;
+    document.getElementById('anom-list-title').textContent='Toutes les anomalies';
+    document.getElementById('anom-list').innerHTML=allA.length?allA.map(a=>anomCardHtml(a,true)).join('')
+      :`<div style="text-align:center;padding:26px;color:var(--muted);font-size:.8rem;">Aucune anomalie.</div>`;
+  } else {
+    myA=await loadAnom(CU.name);
+    myA.sort((a,b)=>b.date.localeCompare(a.date));
+    const{y,m}=ym(monthOffset);
+    const monthA=myA.filter(a=>a.date&&a.date.startsWith(`${y}-${String(m).padStart(2,'0')}`));
+    document.getElementById('as-total').textContent=myA.length;
+    document.getElementById('as-penalty').textContent=fmt2(myA.reduce((s,a)=>s+Number(a.penalty),0));
+    document.getElementById('as-month').textContent=monthA.length;
+    document.getElementById('anom-list-title').textContent='Mes anomalies';
+    document.getElementById('anom-list').innerHTML=myA.length?myA.map(a=>anomCardHtml(a,false)).join('')
+      :`<div style="text-align:center;padding:26px;color:var(--muted);font-size:.8rem;">Aucune anomalie.</div>`;
+  }
+}
+function anomCardHtml(a,showDelete){
+  return`<div class="anom-card">
+    <div class="anom-head">
+      <div class="ameta"><strong>${a.label||a.categorie}</strong><span>${a.livreur} — ${fdate(a.date)}</span></div>
+      <span class="penalty-badge">−${fmt2(Number(a.penalty))} €</span>
+    </div>
+    <div class="anom-details">
+      ${a.col?`<span class="dk">N° COL</span><span class="dv">${a.col}</span>`:''}
+      ${a.comment?`<span class="dk">Commentaire</span><span class="dv">${a.comment}</span>`:''}
+      <span class="dk">Saisi par</span><span class="dv">${a.saisie||'Admin'}</span>
+    </div>
+    ${showDelete?`<div class="recl-actions"><button class="btn btn-danger btn-sm" onclick="deleteAnomUI('${a.id}','${a.livreur}')">🗑 Supprimer</button></div>`:''}
+  </div>`;
+}
+async function deleteAnomUI(id,livreur){
+  if(!confirm('Supprimer cette anomalie ?'))return;
+  await deleteAnomRemote(id,livreur);
+  await renderAnom();if(CU.admin)renderAdmin();
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+async function adminShowHist(){
+  const who=document.getElementById('admin-edit-livreur').value;
+  const cont=document.getElementById('admin-hist-content');
+  if(!who){cont.innerHTML='';return;}
+  const ymkey=ymStr(monthOffset);
+  const entries=await loadEntries(who,ymkey);
+  if(!entries.length){cont.innerHTML=`<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem;">Aucune saisie ce mois pour ${who}.</div>`;return;}
+  const T=calcTotals(entries);
+  let html=`<div style="font-size:.78rem;color:var(--muted);margin-bottom:8px;">Saisies de <strong style="color:var(--text)">${who}</strong></div>`;
+  html+=`<div class="hist-table-wrap"><table><thead><tr>
+    <th>Date</th><th>Tournée</th><th>Emportés</th><th>Livrés</th><th>Relais</th><th>Adresse</th><th>RD</th><th>Avisés</th><th>AI</th><th>Récl.</th><th></th>
+  </tr></thead><tbody>`;
+  let cum=0;
+  entries.forEach(e=>{
+    const prev=cum;cum+=Number(e.livres)||0;
+    const ds=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    html+=`<tr><td>${ds}${prev>=OBJECTIVE?'<span class="tag tag-quota">★</span>':''}${e.modified?'<span style="color:var(--ibk-orange);font-size:.6rem;"> ✎</span>':''}</td>
+      <td style="font-size:.7rem">${e.tournee||'—'}</td><td>${Number(e.emportes)||0}</td><td>${Number(e.livres)||0}</td>
+      <td>${Number(e.relais)||0}</td><td style="color:var(--ibk-light-blue)">${Number(e.adresse)||0}</td>
+      <td style="color:var(--red)">${Number(e.rd)||0}</td><td>${Number(e.avis)||0}</td>
+      <td style="color:var(--red)">${Number(e.ai)||0}</td><td style="color:var(--orange)">${Number(e.reclNb)||0}</td>
+      <td><button class="btn btn-secondary btn-sm" style="padding:4px 8px;font-size:.65rem;" onclick="openEditModal('${e.date}','${who}')">✏️</button></td></tr>`;
+  });
+  html+=`<tr style="background:var(--navy3);font-weight:700;"><td colspan="2">TOTAL</td>
+    <td>${entries.reduce((s,e)=>s+(Number(e.emportes)||0),0)}</td>
+    <td style="color:var(--green)">${T.livres}</td><td>${T.relais}</td>
+    <td style="color:var(--ibk-light-blue)">${T.adresse}</td><td style="color:var(--red)">${T.rd}</td>
+    <td>${T.avis}</td><td style="color:var(--red)">${T.ai}</td>
+    <td style="color:var(--orange)">${entries.reduce((s,e)=>s+(Number(e.reclNb)||0),0)}</td><td></td>
+  </tr></tbody></table></div>`;
+  cont.innerHTML=html;
+}
+
+async function renderAdmin(){
+  const ymkey=ymStr(monthOffset);
+  const allEntries=await loadAllEntries(ymkey);
+  let rows='',rrows='',arows='';
+  for(const u of LIVREURS){
+    const uEntries=allEntries.filter(e=>e.user===u.name);
+    const T=calcTotals(uEntries);
+    const pct=Math.min(100,Math.round(T.livres/OBJECTIVE*100));
+    rows+=`<div class="admin-row">
+      <div class="info"><div class="name2">${u.name}</div><div class="code">${uEntries.length} jour(s) — ${pct}% objectif</div></div>
+      <div><div style="font-family:'DM Mono',monospace;font-size:1.02rem;font-weight:700;color:var(--green)">${T.livres}</div><div style="font-size:.66rem;color:var(--muted)">livrés / ${OBJECTIVE}</div></div>
+    </div>`;
+    const rl=LC.get(rk(u.name))||[];
+    const offAll=LC.get(rk('__office__'))||[];
+    const off=offAll.filter(r=>r.livreur===u.name);
+    const att=rl.filter(r=>r.statut==='en_attente'&&!expired(r.ts)).length;
+    const nr=rl.filter(r=>r.statut==='non_responsable').length;
+    const re=rl.filter(r=>r.statut==='responsable'||(r.statut==='en_attente'&&expired(r.ts))).length+off.length;
+    const totalIndem=[...rl,...off].reduce((s,r)=>s+(Number(r.indem)||0),0);
+    rrows+=`<div class="admin-row">
+      <div class="info"><div class="name2">${u.name}</div><div class="code">${rl.length+off.length} réclamation(s)${totalIndem>0?' — indem '+fmt2(totalIndem)+' €':''}</div></div>
+      <div style="display:flex;gap:10px;font-size:.76rem;font-family:'DM Mono',monospace;">
+        <span style="color:var(--ibk-orange)">${att} att.</span>
+        <span style="color:var(--green)">${nr} N/R</span>
+        <span style="color:var(--red)">${re} resp.</span>
+      </div>
+    </div>`;
+    const anoms=LC.get(ak(u.name))||[];
+    const{y,m}=ym(monthOffset);
+    const monthAnoms=anoms.filter(a=>a.date&&a.date.startsWith(`${y}-${String(m).padStart(2,'0')}`));
+    const pen=monthAnoms.reduce((s,a)=>s+Number(a.penalty),0);
+    const penTotal=anoms.reduce((s,a)=>s+Number(a.penalty),0);
+    arows+=`<div class="admin-row">
+      <div class="info"><div class="name2">${u.name}</div><div class="code">${monthAnoms.length} anomalie(s) ce mois / ${anoms.length} total</div></div>
+      <div style="text-align:right;">
+        <div style="font-family:'DM Mono',monospace;font-size:.95rem;font-weight:700;color:var(--red)">−${fmt2(pen)} €</div>
+        <div style="font-size:.64rem;color:var(--muted)">ce mois / total −${fmt2(penTotal)} €</div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('admin-grid').innerHTML=rows;
+  document.getElementById('admin-recl-grid').innerHTML=rrows;
+  document.getElementById('admin-anom-grid').innerHTML=arows;
+  let ch='<div class="admin-grid">';
+  USERS.forEach(u=>{ch+=`<div class="admin-row"><div class="info"><div class="name2">${u.name}</div><div class="code">${u.role}</div></div><div style="font-family:'DM Mono',monospace;font-size:.93rem;font-weight:700;color:var(--ibk-blue)">${u.pin}</div></div>`;});
+  ch+='</div>';document.getElementById('codes-list').innerHTML=ch;
+  renderGestionLivreurs();
+}
+
+// ============================================================
+// EXPORTS CSV
+// ============================================================
+async function exportCSV(){
+  const ymkey=ymStr(monthOffset);
+  const all=await loadAllEntries(ymkey);
+  let csv='Livreur;Date;Tournée;Emportés;Livrés total;Dont relais;Livrés adresse;RD;Avisés;AI;Réclamations jour;Traitées\n';
+  all.forEach(e=>{csv+=`${e.user};${e.date};${e.tournee||''};${Number(e.emportes)||0};${Number(e.livres)||0};${Number(e.relais)||0};${Number(e.adresse)||0};${Number(e.rd)||0};${Number(e.avis)||0};${Number(e.ai)||0};${Number(e.reclNb)||0};${Number(e.reclTrait)||0}\n`;});
+  dlCSV(csv,`livraisons_${ymkey}.csv`);
+}
+async function exportReclCSV(){
+  let csv='Livreur;Type;Date saisie;Nom réclamant;Adresse;Date livraison;N° COL;Motif;Objet;Statut;Indemnisation (€)\n';
+  for(const u of USERS){
+    const list=await loadRecl(u.name);
+    list.forEach(r=>{
+      const st=(r.statut==='en_attente'&&expired(r.ts))?'responsable (expiré)':r.statut;
+      csv+=`${u.name};Réclamation livreur;${r.ts?new Date(r.ts).toLocaleDateString('fr-FR'):'—'};${r.nom};${r.adresse};${fdate(r.dateLivr)};${r.col||''};${r.motif||''};${r.objet||''};${st};${Number(r.indem)||0}\n`;
+    });
+  }
+  const offAll=LC.get(rk('__office__'))||[];
+  offAll.filter(r=>r.type==='office').forEach(r=>{
+    csv+=`${r.livreur};Réclamation d'office;${r.ts?new Date(r.ts).toLocaleDateString('fr-FR'):'—'};${r.nom};${r.adresse};${fdate(r.dateLivr)};${r.col||''};${r.motif||''};${r.objet||''};responsable (office);${Number(r.indem)||0}\n`;
+  });
+  dlCSV(csv,'reclamations_export.csv');
+}
+async function exportAnomCSV(){
+  let csv='Livreur;Date;Catégorie;N° COL;Pénalité (€);Commentaire;Saisi par\n';
+  for(const u of LIVREURS){
+    const list=await loadAnom(u.name);
+    list.forEach(a=>{csv+=`${u.name};${a.date};${a.label||a.categorie};${a.col||''};${fmt2(Number(a.penalty))};${(a.comment||'').replace(/;/g,' ')};${a.saisie||''}\n`;});
+  }
+  dlCSV(csv,'anomalies_export.csv');
+}
+function dlCSV(csv,filename){
+  const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();
+}
+
+// ============================================================
+// EXPORTS EXCEL & COMPTABLE
+// ============================================================
+// ============================================================
+// GESTION DES LIVREURS (Supabase)
+// ============================================================
+async function addLivreur(){
+  const nom = document.getElementById('new-livreur-nom').value.trim();
+  const pin = document.getElementById('new-livreur-pin').value.trim();
+  const salaire = parseInt(document.getElementById('new-livreur-salaire').value)||1600;
+  const role = document.getElementById('new-livreur-role').value;
+  const errEl = document.getElementById('add-livreur-error');
+  const okEl = document.getElementById('add-livreur-ok');
+
+  if(!nom||!pin||pin.length!==4){
+    errEl.textContent='Remplissez tous les champs (PIN = 4 chiffres).';
+    errEl.style.display='block'; return;
+  }
+  if(USERS.find(u=>u.name===nom)){
+    errEl.textContent='Un utilisateur avec ce nom existe déjà.';
+    errEl.style.display='block'; return;
+  }
+  errEl.style.display='none';
+
+  const isAdmin = role === 'Responsable' || role === 'Associé';
+  const newUser = {
+    id: uid(), name:nom, pin, role,
+    admin: isAdmin, salaire, actif:true
+  };
+
+  // Sauvegarder dans Supabase
+  const r = await sbUpsert('users', newUser);
+
+  // Mettre à jour localement immédiatement
+  USERS.push(newUser);
+  if(!isAdmin) LIVREURS.push(newUser);
+  LC.set('users_cache', USERS);
+  populateSelects();
+
+  // Reset form
+  document.getElementById('new-livreur-nom').value='';
+  document.getElementById('new-livreur-pin').value='';
+  document.getElementById('new-livreur-salaire').value='';
+  okEl.style.display='block';
+  setTimeout(()=>okEl.style.display='none', 3000);
+
+  // Refresh liste
+  renderGestionLivreurs();
+}
+
+async function toggleLivreur(name, actif){
+  // Désactiver ou réactiver un livreur
+  const user = USERS.find(u=>u.name===name);
+  if(!user) return;
+  user.actif = actif;
+
+  await fetch(`${SUPA_URL}/rest/v1/users?name=eq.${name.replace(/ /g,'%20')}`, {
+    method:'PATCH',
+    headers: {...SB_HEADERS, 'Prefer':'return=minimal'},
+    body: JSON.stringify({actif})
+  });
+
+  // Mettre à jour localement
+  USERS = USERS.map(u=>u.name===name?{...u,actif}:u);
+  LIVREURS = USERS.filter(u=>!u.admin&&u.actif);
+  LC.set('users_cache', USERS);
+  populateSelects();
+  renderGestionLivreurs();
+}
+
+function renderGestionLivreurs(){
+  const el = document.getElementById('livreurs-gestion-list');
+  if(!el) return;
+  const allUsers = LC.get('users_cache')||USERS;
+  el.innerHTML = allUsers.map(u=>`
+    <div class="admin-row" style="opacity:${u.actif!==false?1:0.5}">
+      <div class="info">
+        <div class="name2">${u.name} ${u.actif===false?'<span style="color:var(--red);font-size:.72rem">● Inactif</span>':'<span style="color:var(--green);font-size:.72rem">● Actif</span>'}</div>
+        <div class="code">${u.role} — PIN: ${u.pin} — ${u.salaire||0}€/mois</div>
+      </div>
+      <button class="btn ${u.actif!==false?'btn-secondary':'btn-green'}" style="width:auto;padding:6px 12px;font-size:.78rem"
+        onclick="toggleLivreur('${u.name}',${u.actif===false})">
+        ${u.actif!==false?'Désactiver':'Réactiver'}
+      </button>
+    </div>`).join('');
+}
+
+function openExportExcelModal(){ document.getElementById('modal-export-excel').classList.add('active'); }
+function openExportComptableModal(){ document.getElementById('modal-export-comptable').classList.add('active'); }
+
+const SALAIRES_BASE = {
+  'Bili Fontaine':1600,'Olivier Flocan':1600,'Adama Dia':1600,'Soriba Dramé':1600,
+  'Mamadou Ndoye':1800,'Nestor Kouam':1800,'Hicham Idir':1800,
+};
+const POSTE_LIVREURS = ['Nestor Kouam','Hicham Idir','Bili Fontaine','Mamadou Ndoye','Adama Dia'];
+
+async function buildLivreursFinData(){
+  const ymkey = ymStr(monthOffset);
+  const result = {};
+  for(const name of POSTE_LIVREURS){
+    const entries = await loadEntries(name, ymkey);
+    const recl = LC.get(rk(name))||[];
+    const T = calcTotals(entries, recl);
+    const anomsAll = await loadAnom(name, false);
+    const anomsMois = anomsAll.filter(a=>a.date&&a.date.startsWith(ymkey));
+    const penAnom = anomsMois.reduce((s,a)=>s+Number(a.penalty),0);
+    const indem = recl.filter(r=>r.objet==='Objet perdu'&&r.statut==='responsable').reduce((s,r)=>s+Number(r.indem||0),0);
+    const rhList = getRH(name, ymkey);
+    const retards = rhList.filter(e=>e.retard).length;
+    const penRetard = retards*20;
+    const primeKey = `prime_rempl_${name.replace(/\s+/g,'_')}_${ymkey}`;
+    const primeRempl = JSON.parse(localStorage.getItem(primeKey)||'[]').reduce((s,p)=>s+p.montant,0);
+    const base = SALAIRES_BASE[name]||1600;
+    result[name] = {
+      salaireBase:base, primeMontant:T.primeMontant, primeRempl,
+      penalitesAnom:penAnom, totalIndem:indem, penalitesRetard:penRetard,
+      salaireNet: base + T.primeMontant + primeRempl - penAnom - indem - penRetard,
+      livres:T.livres, adresse:T.adresse, taux:T.tauxRecl
+    };
+  }
+  return result;
+}
+
+async function doExportExcel(){
+  const {y,m} = ym(monthOffset);
+  const monthLabel = mlbl(y,m);
+  const livreursData = await buildLivreursFinData();
+  const carburant = {
+    'Vito 1':   parseFloat(document.getElementById('carb-vito1').value)||0,
+    'Vito 2':   parseFloat(document.getElementById('carb-vito2').value)||0,
+    'Fiat 6m3': parseFloat(document.getElementById('carb-fiat6').value)||0,
+    'Fiat 12m3':parseFloat(document.getElementById('carb-fiat12').value)||0,
+    'Expert 1': parseFloat(document.getElementById('carb-expert1').value)||0,
+    'Expert 2': parseFloat(document.getElementById('carb-expert2').value)||0,
+    'Transit':  parseFloat(document.getElementById('carb-transit').value)||0,
+  };
+  let csv = `EXPORT IBK EURO-AFRIQUE — ${monthLabel}\nGénéré le ${new Date().toLocaleDateString('fr-FR')}\n\n`;
+  csv += `=== SALAIRES LIVREURS LA POSTE ===\n`;
+  csv += `Livreur;Base (€);Prime quota;Prime rempl.;Pén. anomalies;Indemnisations;Pén. retard prépa;SALAIRE NET;Colis livrés;Taux récl./10K\n`;
+  let totalSalaires = 0;
+  for(const [name, d] of Object.entries(livreursData)){
+    csv += `${name};${d.salaireBase};${d.primeMontant.toFixed(2)};${d.primeRempl.toFixed(2)};${d.penalitesAnom.toFixed(2)};${d.totalIndem.toFixed(2)};${d.penalitesRetard.toFixed(2)};${d.salaireNet.toFixed(2)};${d.livres};${d.taux}\n`;
+    totalSalaires += d.salaireNet;
+  }
+  csv += `TOTAL;;;;;;;;${totalSalaires.toFixed(2)}\n\n`;
+  csv += `=== CARBURANT ===\nVéhicule;Montant (€)\n`;
+  let totalCarb = 0;
+  for(const [v,mt] of Object.entries(carburant)){
+    if(mt>0){csv += `${v};${mt.toFixed(2)}\n`; totalCarb+=mt;}
+  }
+  csv += `TOTAL CARBURANT;${totalCarb.toFixed(2)}\n\n`;
+  csv += `=== RÉCAPITULATIF ===\nPoste;Montant (€)\n`;
+  csv += `Total salaires La Poste;${totalSalaires.toFixed(2)}\n`;
+  csv += `Total carburant;${totalCarb.toFixed(2)}\n`;
+  csv += `TOTAL CHARGES;${(totalSalaires+totalCarb).toFixed(2)}\n`;
+  dlCSV(csv, `IBK_Salaires_${monthLabel.replace(/\s/g,'_')}.csv`);
+  closeModal('modal-export-excel');
+}
+
+async function doExportComptable(){
+  const {y,m} = ym(monthOffset);
+  const monthLabel = mlbl(y,m);
+  const livreursData = await buildLivreursFinData();
+  const caPoste  = parseFloat(document.getElementById('compta-ca-poste').value)||0;
+  const caChrono = parseFloat(document.getElementById('compta-ca-chrono').value)||0;
+  const caDemo   = parseFloat(document.getElementById('compta-ca-demo').value)||0;
+  const tva      = parseFloat(document.getElementById('compta-tva').value)||0;
+  const totalCA  = caPoste + caChrono + caDemo;
+  let totalSalaires = 0;
+  for(const d of Object.values(livreursData)) totalSalaires += d.salaireNet;
+
+  let csv = `DOSSIER COMPTABLE — IBK EURO-AFRIQUE — ${monthLabel}\nGénéré le ${new Date().toLocaleDateString('fr-FR')}\n\n`;
+  csv += `=== CHIFFRE D'AFFAIRES ===\nActivité;Montant HT (€)\n`;
+  csv += `Colissimo La Poste;${caPoste.toFixed(2)}\nChronopost;${caChrono.toFixed(2)}\nDéménagement;${caDemo.toFixed(2)}\n`;
+  csv += `TOTAL CA HT;${totalCA.toFixed(2)}\nTVA collectée;${tva.toFixed(2)}\n\n`;
+  csv += `=== CHARGES — SALAIRES LIVREURS LA POSTE ===\nLivreur;Base;Primes;Pénalités;NET À PAYER\n`;
+  for(const [name, d] of Object.entries(livreursData)){
+    const primes = d.primeMontant + d.primeRempl;
+    const pen = d.penalitesAnom + d.totalIndem + d.penalitesRetard;
+    csv += `${name};${d.salaireBase};${primes.toFixed(2)};${pen.toFixed(2)};${d.salaireNet.toFixed(2)}\n`;
+  }
+  csv += `TOTAL SALAIRES LA POSTE;;;;${totalSalaires.toFixed(2)}\n\n`;
+  csv += `=== INDICATEURS ===\nLivreur;Colis livrés;Taux récl./10K;Prime quota (€)\n`;
+  for(const [name, d] of Object.entries(livreursData)){
+    csv += `${name};${d.livres};${d.taux};${d.primeMontant.toFixed(2)}\n`;
+  }
+  csv += `\n=== RÉSULTAT PRÉVISIONNEL ===\n`;
+  csv += `CA Total HT;${totalCA.toFixed(2)}\nCharges salaires La Poste;${totalSalaires.toFixed(2)}\n`;
+  csv += `TVA collectée;${tva.toFixed(2)}\nMarge brute estimée;${(totalCA-totalSalaires).toFixed(2)}\n`;
+  dlCSV(csv, `IBK_Comptable_${monthLabel.replace(/\s/g,'_')}.csv`);
+  closeModal('modal-export-comptable');
+}
+
+// ============================================================
+// WHATSAPP
+// ============================================================
+async function buildMsg(){
+  const ymkey=ymStr(monthOffset);
+  const entries=LC.get(ek(CU.name,ymkey))||[];
+  const t=today();
+  const e=entries.find(e=>e.date===t);if(!e)return null;
+  const T=calcTotals(entries);
+  const pend=(LC.get(rk(CU.name))||[]).filter(r=>r.statut==='en_attente'&&!expired(r.ts)).length;
+  const myA=LC.get(ak(CU.name))||[];
+  const penTotal=myA.reduce((s,a)=>s+Number(a.penalty),0);
+  const d=new Date(t+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  return`📦 *SYNTHÈSE LIVRAISON — IBK Euro-Afrique*\n*${CU.name}* — ${d}\nTournée : ${e.tournee||'—'}\n\n`+
+    `*Journée :*\n• Emportés : ${Number(e.emportes)||0}\n• Livrés total : ${Number(e.livres)||0}\n`+
+    `• Dont point relais : ${Number(e.relais)||0}\n• Livrés adresse : ${Number(e.adresse)||0}\n`+
+    `• RD : ${Number(e.rd)||0}\n• Avisés : ${Number(e.avis)||0}\n• AI : ${Number(e.ai)||0}\n`+
+    `• Réclamations : ${Number(e.reclNb)||0} (${Number(e.reclTrait)||0} traitées)\n\n`+
+    `*Cumul mois :*\n• Livrés total : ${T.livres} / ${OBJECTIVE}\n`+
+    (T.livres>=OBJECTIVE?`• ⭐ Colis prime : ${T.prime}\n`:'')+
+    (pend?`\n⚠️ ${pend} réclamation(s) en attente (délai 48h)\n`:'')+
+    (myA.length?`\n⚠️ Anomalies : ${myA.length} (pénalités : −${fmt2(penTotal)} €)\n`:'')+
+    `\n_Synthèse Livraison — IBK Euro-Afrique_`;
+}
+async function openSendModal(){
+  const txt=await buildMsg();
+  if(!txt){alert("Aucune saisie aujourd'hui. Enregistrez d'abord la journée.");return;}
+  document.getElementById('modal-send').classList.add('active');
+}
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+async function sendWhatsApp(){
+  const t=await buildMsg();if(!t)return;
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t)}`,'_blank');
+  closeModal('modal-send');
+}
+// ============================================================
+// SYNTHÈSE FINANCIÈRE
+// ============================================================
+async function renderSynthese(){
+  if(!CU) return;
+  const ymkey = ymStr(monthOffset);
+  const {y,m} = ym(monthOffset);
+  document.getElementById('lbl-month-6').textContent = mlbl(y,m);
+
+  // Afficher le sélecteur pour les admins et le remplir
+  const selector = document.getElementById('sf-selector');
+  const selEl = document.getElementById('sf-livreur-select');
+  if(CU.admin){
+    selector.style.display='';
+    if(selEl.options.length<=1){
+      LIVREURS.forEach(u=>{
+        const o=document.createElement('option');
+        o.value=u.name; o.textContent=u.name;
+        selEl.appendChild(o);
+      });
+    }
+  } else {
+    selector.style.display='none';
+  }
+
+  // Déterminer qui on affiche
+  const selectedLivreur = CU.admin ? selEl.value : CU.name;
+  const isAll = selectedLivreur === '__all__';
+  const targetUsers = isAll ? LIVREURS.map(u=>u.name) : [selectedLivreur||CU.name];
+
+  // Libellé solde
+  document.getElementById('sf-solde-label').textContent = isAll
+    ? 'Solde net consolidé — tous livreurs'
+    : `Solde net — ${targetUsers[0]}`;
+
+  // Charger et consolider les données pour tous les utilisateurs ciblés
+  let totalPrimeMontant=0, totalPenAnom=0, totalIndemTotal=0,
+      totalPenRetard=0, totalPrimeRempl=0, totalLivres=0,
+      totalRelais=0, totalEmportes=0, totalNbRecl=0,
+      totalColisAdressePrime=0, allAnomsMois=[];
+
+  for(const name of targetUsers){
+    const entries = await loadEntries(name, ymkey);
+    const recl = await loadRecl(name, false);
+    const T = calcTotals(entries, recl);
+
+    const anomsAll = await loadAnom(name, false);
+    const anomsMois = anomsAll.filter(a=>a.date&&a.date.startsWith(ymkey));
+    const penAnom = anomsMois.reduce((s,a)=>s+Number(a.penalty),0);
+
+    const reclIndem = recl.filter(r=>r.objet==='Objet perdu'&&(r.statut==='responsable'||(r.statut==='en_attente'&&expired(r.ts))));
+    const indem = reclIndem.reduce((s,r)=>s+Number(r.indem||0),0);
+
+    const reclOffice = (LC.get(rk('__office__'))||[]).filter(r=>r.livreur===name);
+    const indemOffice = reclOffice.reduce((s,r)=>s+Number(r.indem||0),0);
+
+    const rhList = getRH(name, ymkey);
+    const retards = rhList.filter(e=>e.retard).length;
+    const penRetard = retards * 20;
+
+    const primeKey = `prime_rempl_${name.replace(/\s+/g,'_')}_${ymkey}`;
+    const primeRempl = JSON.parse(localStorage.getItem(primeKey)||'[]').reduce((s,p)=>s+p.montant,0);
+
+    totalPrimeMontant += T.primeMontant;
+    totalColisAdressePrime += T.colisAdressePrime;
+    totalPenAnom += penAnom;
+    totalIndemTotal += indem + indemOffice;
+    totalPenRetard += penRetard;
+    totalPrimeRempl += primeRempl;
+    totalLivres += T.livres;
+    totalRelais += T.relais;
+    totalEmportes += T.emportes;
+    totalNbRecl += T.nbRecl||0;
+    allAnomsMois = [...allAnomsMois, ...anomsMois];
+  }
+
+  const totalPrimes = totalPrimeMontant + totalPrimeRempl;
+  const totalPenalites = totalPenAnom + totalIndemTotal + totalPenRetard;
+  const solde = totalPrimes - totalPenalites;
+  const soldeColor = solde >= 0 ? 'var(--green)' : 'var(--red)';
+  const tauxRecl = totalEmportes>0 ? Math.round((totalNbRecl/totalEmportes)*10000*100)/100 : 0;
+
+  // Affichage cartes
+  document.getElementById('sf-solde').textContent = `${solde>=0?'+':''}${solde.toFixed(2)} €`;
+  document.getElementById('sf-solde').style.color = soldeColor;
+  document.getElementById('sf-prime').textContent = `${totalPrimeMontant.toFixed(2)} €`;
+  document.getElementById('sf-anom').textContent = `${totalPenAnom.toFixed(2)} €`;
+  document.getElementById('sf-indem').textContent = `${totalIndemTotal.toFixed(2)} €`;
+  document.getElementById('sf-retard').textContent = `${totalPenRetard.toFixed(2)} €`;
+  document.getElementById('sf-prime-rempl').textContent = `${totalPrimeRempl.toFixed(2)} €`;
+  const tauxEl = document.getElementById('sf-taux-recl');
+  tauxEl.textContent = `${tauxRecl}/10K`;
+  tauxEl.style.color = tauxRecl > TAUX_RECL_SEUIL ? 'var(--red)' : 'var(--green)';
+
+  // Tableau détail
+  const rows = [
+    {label:'Colis livrés total', val:totalLivres, unit:'colis', color:'var(--green)'},
+    {label:'Dont point relais', val:totalRelais, unit:'colis', color:'var(--muted)'},
+    {label:'Colis livrés adresse', val:totalLivres-totalRelais, unit:'colis', color:'var(--ibk-light-blue)'},
+    {label:'Taux réclamations', val:tauxRecl+'/10 000', unit:'', color:tauxRecl>TAUX_RECL_SEUIL?'var(--red)':'var(--green)', raw:true},
+    {label:'Colis prime (adresse au-delà seuil)', val:totalColisAdressePrime, unit:'colis', color:'var(--ibk-orange)'},
+    {label:'Prime quota dépassé (0,50€/colis)', val:'+'+totalPrimeMontant.toFixed(2)+' €', unit:'', color:'var(--green)', raw:true},
+    {label:'Pénalités anomalies ('+allAnomsMois.length+' anomalie(s))', val:'-'+totalPenAnom.toFixed(2)+' €', unit:'', color:'var(--red)', raw:true},
+    {label:'Indemnisations réclamations', val:'-'+totalIndemTotal.toFixed(2)+' €', unit:'', color:'var(--red)', raw:true},
+    {label:'Pénalités retard prépa', val:'-'+totalPenRetard.toFixed(2)+' €', unit:'', color:'var(--red)', raw:true},
+    {label:'Primes remplacement prépa', val:'+'+totalPrimeRempl.toFixed(2)+' €', unit:'', color:'var(--green)', raw:true},
+    {label:'SOLDE NET', val:(solde>=0?'+':'')+solde.toFixed(2)+' €', unit:'', color:soldeColor, raw:true, bold:true},
+  ];
+  document.getElementById('sf-tableau').innerHTML = `
+    <div class="hist-table-wrap"><table><thead><tr><th>Indicateur</th><th style="text-align:right">Valeur</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr style="${r.bold?'background:var(--navy3);font-weight:700;':''}">
+        <td style="font-size:.82rem">${r.label}</td>
+        <td style="text-align:right;font-family:'DM Mono',monospace;color:${r.color};font-weight:${r.bold?'700':'600'}">
+          ${r.raw ? r.val : r.val+' '+r.unit}
+        </td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+
+  // Vue par livreur (admins uniquement — mode consolidé)
+  if(CU.admin && isAll){
+    let html = '<div class="section-title">Détail par livreur</div>';
+    const allEntries = await loadAllEntries(ymkey);
+    for(const u of LIVREURS){
+      const uEntries = allEntries.filter(e=>e.user_name===u.name||e.user===u.name);
+      const uRecl = LC.get(rk(u.name))||[];
+      const uT = calcTotals(uEntries, uRecl);
+      const uAnomsAll = await loadAnom(u.name, false);
+      const uAnomsMois = uAnomsAll.filter(a=>a.date&&a.date.startsWith(ymkey));
+      const uPenAnom = uAnomsMois.reduce((s,a)=>s+Number(a.penalty),0);
+      const uIndem = uRecl.filter(r=>r.objet==='Objet perdu'&&r.statut==='responsable').reduce((s,r)=>s+Number(r.indem||0),0);
+      const uRH = getRH(u.name, ymkey);
+      const uRetards = uRH.filter(e=>e.retard).length;
+      const uPenRetard = uRetards*20;
+      const uPrimeKey = `prime_rempl_${u.name.replace(/\s+/g,'_')}_${ymkey}`;
+      const uPrimesRempl = JSON.parse(localStorage.getItem(uPrimeKey)||'[]').reduce((s,p)=>s+p.montant,0);
+      const uSolde = uT.primeMontant + uPrimesRempl - uPenAnom - uIndem - uPenRetard;
+      html += `<div class="admin-row" style="flex-wrap:wrap;gap:6px;cursor:pointer;" onclick="document.getElementById('sf-livreur-select').value='${u.name}';renderSynthese()">
+        <div class="info">
+          <div class="name2">${u.name}</div>
+          <div class="code">${uT.livres} livrés • ${uAnomsMois.length} anomalie(s) • taux récl: ${uT.tauxRecl}/10K${uT.penaliteRecl?' ⚠️':''}</div>
+        </div>
+        <div style="display:flex;gap:8px;font-family:'DM Mono',monospace;font-size:.82rem;flex-wrap:wrap;justify-content:flex-end;align-items:center;">
+          <span style="color:var(--green)">+${uT.primeMontant.toFixed(2)}€</span>
+          <span style="color:var(--red)">-${(uPenAnom+uIndem+uPenRetard).toFixed(2)}€</span>
+          <span style="color:${uSolde>=0?'var(--green)':'var(--red)'};font-weight:700;font-size:.9rem">${uSolde>=0?'+':''}${uSolde.toFixed(2)}€</span>
+          <span style="font-size:.68rem;color:var(--muted)">→ détail</span>
+        </div>
+      </div>`;
+    }
+    document.getElementById('sf-detail-livreurs').innerHTML = html;
+  } else {
+    document.getElementById('sf-detail-livreurs').innerHTML = '';
+  }
+}
+
+function viewPhoto(src){
+  document.getElementById('modal-photo-img').src=src;
+  document.getElementById('modal-photo').classList.add('active');
+}
+
+
+// ============================================================
+// RELEVÉ D'HEURES — HORODATAGE
+// ============================================================
+let rhContrat = 35;
+
+// 5 étapes horodatage
+const RH_STEPS = [
+  {id:'arrivee_site',    label:'Arrivée sur site'},
+  {id:'debut_distrib',   label:'Début distribution'},
+  {id:'fin_distrib',     label:'Fin distribution'},
+  {id:'arrivee_agence',  label:'Arrivée agence retour'},
+  {id:'fin_journee',     label:'Fin de journée'},
+];
+
+// Horodatages du jour en cours (en mémoire)
+let rhTodayStamps = {};
+
+const rhk = (u, ym) => `rh_${u.replace(/\s+/g,'_')}_${ym}`;
+const getRH = (u, ym) => { try{return JSON.parse(localStorage.getItem(rhk(u,ym)))||[];}catch{return [];} };
+const setRH = (u, ym, v) => localStorage.setItem(rhk(u,ym), JSON.stringify(v));
+
+function setContrat(h){
+  rhContrat = h;
+  document.querySelectorAll('.rh-contrat-btn').forEach(b=>{
+    b.classList.toggle('active', parseInt(b.dataset.h)===h);
+  });
+  renderRH();
+}
+
+function timeToMin(t){
+  if(!t) return null;
+  const [h,m] = t.split(':').map(Number);
+  return h*60 + m;
+}
+
+function minToStr(m){
+  if(m===null||m===undefined||isNaN(m)||m<0) return '0h';
+  const h = Math.floor(m/60);
+  const mn = m%60;
+  return `${h}h${mn>0?String(mn).padStart(2,'0'):''}`;
+}
+
+function stampNow(stepId){
+  const now = new Date();
+  const hStr = String(now.getHours()).padStart(2,'0');
+  const mStr = String(now.getMinutes()).padStart(2,'0');
+  rhTodayStamps[stepId] = `${hStr}:${mStr}`;
+  renderSteps();
+  calcHeures();
+}
+
+function renderSteps(){
+  RH_STEPS.forEach(step => {
+    const el = document.getElementById('step-'+step.id);
+    if(!el) return;
+    const val = rhTodayStamps[step.id];
+    const done = !!val;
+    el.className = 'rh-step' + (done?' done':'');
+    const timeEl = el.querySelector('.step-time');
+    if(timeEl){
+      timeEl.className = 'step-time' + (done?'':' empty');
+      timeEl.textContent = done ? '✓ '+val : 'Non horodaté';
+    }
+    const btn = el.querySelector('.btn-stamp');
+    if(btn){
+      btn.className = 'btn-stamp' + (done?' done':'');
+      btn.textContent = done ? '✓ '+val : '🕐 Horodater';
+    }
+  });
+}
+
+function toggleRetard(){
+  const checked = document.getElementById('rh-retard-check').checked;
+  document.getElementById('rh-remplacant-section').style.display = checked ? '' : 'none';
+}
+
+function calcHeures(){
+  const a = rhTodayStamps['arrivee_site'];
+  const fd = rhTodayStamps['fin_journee'];
+  const dd = rhTodayStamps['debut_distrib'];
+  const fdi = rhTodayStamps['fin_distrib'];
+  const totalMin = (a && fd) ? timeToMin(fd) - timeToMin(a) : null;
+  const distribMin = (dd && fdi) ? timeToMin(fdi) - timeToMin(dd) : null;
+  document.getElementById('rh-live-total').textContent = totalMin!==null ? minToStr(totalMin) : '—';
+  document.getElementById('rh-live-distrib').textContent = distribMin!==null ? minToStr(distribMin) : '—';
+}
+
+async function saveRH(){
+  if(!rhTodayStamps['arrivee_site']){
+    document.getElementById('rh-error').style.display='block'; return;
+  }
+  document.getElementById('rh-error').style.display='none';
+  const t = today();
+  const ymkey = ymStr(monthOffset);
+  const absence = document.getElementById('rh-absence').value;
+  const retard = document.getElementById('rh-retard-check').checked;
+  const remplacant = retard ? document.getElementById('rh-remplacant').value : '';
+  const a = rhTodayStamps['arrivee_site'];
+  const fd = rhTodayStamps['fin_journee'];
+  const dd = rhTodayStamps['debut_distrib'];
+  const fdi = rhTodayStamps['fin_distrib'];
+  const totalMin = (a && fd) ? timeToMin(fd)-timeToMin(a) : 0;
+  const distribMin = (dd && fdi) ? timeToMin(fdi)-timeToMin(dd) : 0;
+
+  const entry = {
+    date:t,
+    arrivee_site: a||'',
+    debut_distrib: dd||'',
+    fin_distrib: fdi||'',
+    arrivee_agence: rhTodayStamps['arrivee_agence']||'',
+    fin_journee: fd||'',
+    totalMin, distribMin,
+    absence, retard, remplacant, ts:Date.now()
+  };
+
+  let list = getRH(CU.name, ymkey);
+  const idx = list.findIndex(r=>r.date===t);
+  if(idx>=0) list[idx]=entry; else list.push(entry);
+  list.sort((a,b)=>a.date.localeCompare(b.date));
+  setRH(CU.name, ymkey, list);
+
+  // Si retard → ajouter prime remplacement au collègue dans son historique local
+  if(retard && remplacant){
+    const primeKey = `prime_rempl_${remplacant.replace(/\s+/g,'_')}_${ymkey}`;
+    const existing = JSON.parse(localStorage.getItem(primeKey)||'[]');
+    const alreadyIdx = existing.findIndex(p=>p.date===t&&p.from===CU.name);
+    const primeEntry = {date:t, from:CU.name, montant:20, label:'Prime remplacement prépa', ts:Date.now()};
+    if(alreadyIdx>=0) existing[alreadyIdx]=primeEntry; else existing.push(primeEntry);
+    localStorage.setItem(primeKey, JSON.stringify(existing));
+  }
+
+  // Sync Supabase
+  try {
+    await sbUpsert('releve_heures', {
+      id: `${CU.name}_${t}`.replace(/\s+/g,'_'),
+      user_name: CU.name, year_month: ymkey, date: t,
+      arrivee_site: a||'', debut_distrib: dd||'',
+      fin_distrib: fdi||'', arrivee_agence: rhTodayStamps['arrivee_agence']||'',
+      fin_journee: fd||'', absence: absence||'',
+      retard: retard, remplacant: remplacant||'',
+      total_min: totalMin, distrib_min: distribMin, ts: Date.now()
+    });
+  } catch(e){}
+
+  renderRH();
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Enregistré !';
+  btn.style.background = 'var(--green)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2000);
+}
+
+function renderRH(){
+  if(!CU) return;
+  const ymkey = ymStr(monthOffset);
+  const list = getRH(CU.name, ymkey);
+  const primeKey = `prime_rempl_${CU.name.replace(/\s+/g,'_')}_${ymkey}`;
+  const primes = JSON.parse(localStorage.getItem(primeKey)||'[]');
+  const totalPrimes = primes.reduce((s,p)=>s+p.montant,0);
+
+  // Pré-remplir horodatages du jour si déjà enregistré
+  const todayEntry = list.find(e=>e.date===today());
+  if(todayEntry && Object.keys(rhTodayStamps).length===0){
+    RH_STEPS.forEach(s=>{ if(todayEntry[s.id]) rhTodayStamps[s.id]=todayEntry[s.id]; });
+    const chk = document.getElementById('rh-retard-check');
+    if(chk && todayEntry.retard) chk.checked=true;
+  }
+
+  // Remplir liste collègues remplaçants
+  const sel = document.getElementById('rh-remplacant');
+  if(sel && sel.options.length<=1){
+    LIVREURS.filter(u=>u.name!==CU.name).forEach(u=>{
+      const o = document.createElement('option');
+      o.value=u.name; o.textContent=u.name;
+      sel.appendChild(o);
+    });
+  }
+
+  renderSteps();
+  calcHeures();
+  const rhDateLbl = document.getElementById('rh-date-label');
+  if(rhDateLbl) rhDateLbl.textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  const lbl5 = document.getElementById('lbl-month-5');
+  if(lbl5) lbl5.textContent = mlbl(ym(monthOffset).y, ym(monthOffset).m);
+
+  // Stats semaine
+  const weekDates = getWeekDates();
+  const weekEntries = list.filter(e=>weekDates.includes(e.date)&&!e.absence);
+  const totalWeekMin = weekEntries.reduce((s,e)=>s+(e.totalMin||0),0);
+  const joursTrav = weekEntries.filter(e=>e.totalMin>0).length;
+  const contratMin = rhContrat*60;
+  const supMin = Math.max(0, totalWeekMin-contratMin);
+  document.getElementById('rh-total-semaine').textContent = minToStr(totalWeekMin);
+  document.getElementById('rh-jours').textContent = joursTrav;
+  document.getElementById('rh-sup').textContent = minToStr(supMin);
+  const pct = Math.min(100, Math.round(totalWeekMin/contratMin*100));
+  document.getElementById('rh-bar').style.width = pct+'%';
+  document.getElementById('rh-pct-label').textContent = pct+'%';
+  document.getElementById('rh-objectif-label').textContent = `Objectif : ${rhContrat}h`;
+
+  // Détail semaine
+  const jours = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  let weekHtml = '';
+  weekDates.forEach((date,i)=>{
+    const e = list.find(r=>r.date===date);
+    const ds = new Date(date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    if(!e){
+      weekHtml += `<div class="rh-day-row" style="opacity:.4;">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-horaires">—</span>
+        <span class="rh-duree" style="color:var(--muted)">—</span>
+      </div>`;
+    } else if(e.absence){
+      weekHtml += `<div class="rh-day-row">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-absence-badge">${e.absence}</span>
+        <span class="rh-duree" style="color:var(--muted)">0h</span>
+      </div>`;
+    } else {
+      const h = [e.arrivee_site,e.debut_distrib,e.fin_distrib,e.arrivee_agence,e.fin_journee].filter(Boolean).join(' › ');
+      const retardBadge = e.retard ? `<span class="rh-retard-badge">Retard −20€</span>` : '';
+      weekHtml += `<div class="rh-day-row">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-horaires">${h} ${retardBadge}</span>
+        <span class="rh-duree">${minToStr(e.totalMin||0)}</span>
+      </div>`;
+    }
+  });
+  document.getElementById('rh-week-detail').innerHTML = weekHtml || '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem;">Aucune saisie cette semaine.</div>';
+
+  // Récap mensuel
+  const totalMoisMin = list.filter(e=>!e.absence).reduce((s,e)=>s+(e.totalMin||0),0);
+  const absences = list.filter(e=>e.absence).length;
+  const retards = list.filter(e=>e.retard).length;
+  const penalitesRetard = retards * 20;
+  const joursTravMois = list.filter(e=>!e.absence&&e.totalMin>0).length;
+  document.getElementById('rh-month-recap').innerHTML = `
+    <div class="hist-table-wrap"><table><thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead><tbody>
+      <tr><td>Jours travaillés</td><td style="font-family:'DM Mono';font-weight:700;color:var(--green)">${joursTravMois} jours</td></tr>
+      <tr><td>Total heures travaillées</td><td style="font-family:'DM Mono';font-weight:700;color:var(--green)">${minToStr(totalMoisMin)}</td></tr>
+      <tr><td>Heures supplémentaires</td><td style="font-family:'DM Mono';font-weight:700;color:var(--ibk-orange)">${minToStr(Math.max(0,totalMoisMin-rhContrat*60*4))}</td></tr>
+      <tr><td>Absences journée complète</td><td style="font-family:'DM Mono';font-weight:700;color:var(--red)">${absences} jour(s)</td></tr>
+      <tr><td>Retards préparation</td><td style="font-family:'DM Mono';font-weight:700;color:var(--red)">${retards} fois</td></tr>
+      <tr><td>Pénalités retard prépa</td><td style="font-family:'DM Mono';font-weight:700;color:var(--red)">−${penalitesRetard.toFixed(2)} €</td></tr>
+      ${totalPrimes>0?`<tr><td>Primes remplacement prépa reçues</td><td style="font-family:'DM Mono';font-weight:700;color:var(--green)">+${totalPrimes.toFixed(2)} €</td></tr>`:''}
+      <tr><td>Contrat de référence</td><td style="font-family:'DM Mono';font-weight:700">${rhContrat}h/semaine</td></tr>
+    </tbody></table></div>`;
+}
+
+function getWeekDates(){
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day===0?6:day-1));
+  const dates = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    dates.push(d.toISOString().slice(0,10));
+  }
+  return dates;
+}
+
+function sendRHWhatsApp(){
+  const ymkey = ymStr(monthOffset);
+  const list = getRH(CU.name, ymkey);
+  const {y,m} = ym(monthOffset);
+  const weekDates = getWeekDates();
+  const weekEntries = list.filter(e=>weekDates.includes(e.date)&&!e.absence);
+  const totalWeekMin = weekEntries.reduce((s,e)=>s+(e.totalMin||0),0);
+  const totalMoisMin = list.filter(e=>!e.absence).reduce((s,e)=>s+(e.totalMin||0),0);
+  const retards = list.filter(e=>e.retard).length;
+  let msg = `*RELEVE D'HEURES — IBK Euro-Afrique*\n*${CU.name}* — ${mlbl(y,m)}\n\n`;
+  msg += `*Semaine en cours :* ${minToStr(totalWeekMin)} / ${rhContrat}h\n`;
+  msg += `*Cumul mois :* ${minToStr(totalMoisMin)}\n`;
+  if(retards>0) msg += `*Retards prépa :* ${retards} fois (−${(retards*20).toFixed(2)} €)\n`;
+  const todayE = list.find(e=>e.date===today());
+  if(todayE&&todayE.arrivee_site){
+    msg += `\n*Aujourd'hui :*\n`;
+    if(todayE.arrivee_site) msg += `• Arrivée site : ${todayE.arrivee_site}\n`;
+    if(todayE.debut_distrib) msg += `• Début distrib : ${todayE.debut_distrib}\n`;
+    if(todayE.fin_distrib) msg += `• Fin distrib : ${todayE.fin_distrib}\n`;
+    if(todayE.arrivee_agence) msg += `• Arrivée agence : ${todayE.arrivee_agence}\n`;
+    if(todayE.fin_journee) msg += `• Fin journée : ${todayE.fin_journee}\n`;
+    msg += `• Total : ${minToStr(todayE.totalMin||0)}\n`;
+  }
+  msg += `\n_IBK Euro-Afrique — Relevé d'heures_`;
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function exportRHCSV(){
+  const ymkey = ymStr(monthOffset);
+  const list = getRH(CU.name, ymkey);
+  let csv = 'Salarie;Date;Arrivee site;Debut distrib;Fin distrib;Arrivee agence;Fin journee;Total (min);Distrib (min);Absence;Retard prepa;Remplacant\n';
+  list.forEach(e=>{
+    csv += `${CU.name};${e.date};${e.arrivee_site||''};${e.debut_distrib||''};${e.fin_distrib||''};${e.arrivee_agence||''};${e.fin_journee||''};${e.totalMin||0};${e.distribMin||0};${e.absence||''};${e.retard?'Oui':'Non'};${e.remplacant||''}\n`;
+  });
+  dlCSV(csv, `releve_heures_${CU.name.replace(/\s+/g,'_')}_${ymkey}.csv`);
+}
+
+function setContrat(h){
+  rhContrat = h;
+  document.querySelectorAll('.rh-contrat-btn').forEach(b=>{
+    b.classList.toggle('active', parseInt(b.dataset.h)===h);
+  });
+  renderRH();
+}
+
+function timeToMin(t){
+  if(!t) return null;
+  const [h,m] = t.split(':').map(Number);
+  return h*60 + m;
+}
+
+function minToStr(m){
+  if(m===null||m===undefined||isNaN(m)) return '—';
+  const h = Math.floor(Math.abs(m)/60);
+  const mn = Math.abs(m)%60;
+  const sign = m < 0 ? '-' : '';
+  return `${sign}${h}h${mn>0?String(mn).padStart(2,'0'):''}`;
+}
+
+function calcHeures(){
+  const a = timeToMin(document.getElementById('rh-arrivee-site').value);
+  const dd = timeToMin(document.getElementById('rh-debut-distrib').value);
+  const fl = timeToMin(document.getElementById('rh-fin-livraison').value);
+  const dp = timeToMin(document.getElementById('rh-depart-site').value);
+  // Total journée = départ site - arrivée site
+  const total = (a!==null && dp!==null && dp>a) ? dp-a : null;
+  // Temps distribution = fin livraison - début distribution
+  const distrib = (dd!==null && fl!==null && fl>dd) ? fl-dd : null;
+  document.getElementById('rh-live-total').textContent = total!==null ? minToStr(total) : '—';
+  document.getElementById('rh-live-distrib').textContent = distrib!==null ? minToStr(distrib) : '—';
+}
+
+function getWeekDates(){
+  const now = new Date();
+  const day = now.getDay(); // 0=dim
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day===0?6:day-1));
+  const dates = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    dates.push(d.toISOString().slice(0,10));
+  }
+  return dates;
+}
+
+async function saveRH(){
+  const a = document.getElementById('rh-arrivee-site').value;
+  const dp = document.getElementById('rh-depart-site').value;
+  const absence = document.getElementById('rh-absence').value;
+  if(!a && !dp && !absence){
+    document.getElementById('rh-error').style.display='block';return;
+  }
+  document.getElementById('rh-error').style.display='none';
+  const dd = document.getElementById('rh-debut-distrib').value;
+  const fl = document.getElementById('rh-fin-livraison').value;
+  const t = today();
+  const ymkey = ymStr(monthOffset);
+  let list = getRH(CU.name, ymkey);
+  const idx = list.findIndex(r=>r.date===t);
+  const totalMin = (timeToMin(a)!==null && timeToMin(dp)!==null) ? timeToMin(dp)-timeToMin(a) : 0;
+  const distribMin = (timeToMin(dd)!==null && timeToMin(fl)!==null) ? timeToMin(fl)-timeToMin(dd) : 0;
+  const entry = {
+    date:t, arrivee:a, debutDistrib:dd, finLivraison:fl, depart:dp,
+    absence, totalMin, distribMin, ts:Date.now()
+  };
+  if(idx>=0) list[idx]=entry; else list.push(entry);
+  list.sort((a,b)=>a.date.localeCompare(b.date));
+  setRH(CU.name, ymkey, list);
+  // Sync Supabase si table existe
+  try {
+    await sbUpsert('releve_heures', {
+      id: `${CU.name}_${t}`.replace(/\s+/g,'_'),
+      user_name: CU.name,
+      year_month: ymkey,
+      date: t,
+      arrivee: a||'',
+      debut_distrib: dd||'',
+      fin_livraison: fl||'',
+      depart: dp||'',
+      absence: absence||'',
+      total_min: totalMin,
+      distrib_min: distribMin,
+      ts: Date.now()
+    });
+  } catch(e){}
+  renderRH();
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Enregistré !';
+  btn.style.background = 'var(--green)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2000);
+}
+
+function renderRH(){
+  if(!CU) return;
+  const ymkey = ymStr(monthOffset);
+  const list = getRH(CU.name, ymkey);
+  const weekDates = getWeekDates();
+
+  // Stats semaine courante
+  const weekEntries = list.filter(e=>weekDates.includes(e.date)&&!e.absence);
+  const totalWeekMin = weekEntries.reduce((s,e)=>s+(e.totalMin||0),0);
+  const joursTrav = weekEntries.filter(e=>e.totalMin>0).length;
+  const contratMin = rhContrat*60;
+  const supMin = Math.max(0, totalWeekMin - contratMin);
+  document.getElementById('rh-total-semaine').textContent = minToStr(totalWeekMin);
+  document.getElementById('rh-jours').textContent = joursTrav;
+  document.getElementById('rh-sup').textContent = minToStr(supMin);
+  const pct = Math.min(100, Math.round(totalWeekMin/contratMin*100));
+  document.getElementById('rh-bar').style.width = pct+'%';
+  document.getElementById('rh-pct-label').textContent = pct+'%';
+  document.getElementById('rh-objectif-label').textContent = `Objectif : ${rhContrat}h`;
+  document.getElementById('rh-date-label').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('lbl-month-5').textContent = mlbl(ym(monthOffset).y, ym(monthOffset).m);
+
+  // Détail semaine
+  const jours = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  let weekHtml = '';
+  weekDates.forEach((date,i)=>{
+    const e = list.find(r=>r.date===date);
+    const ds = new Date(date+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+    if(!e){
+      weekHtml += `<div class="rh-day-row" style="opacity:.4;">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-horaires">—</span>
+        <span class="rh-duree" style="color:var(--muted)">—</span>
+      </div>`;
+    } else if(e.absence){
+      weekHtml += `<div class="rh-day-row">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-absence-badge">${e.absence}</span>
+        <span class="rh-duree" style="color:var(--muted)">0h</span>
+      </div>`;
+    } else {
+      const horaires = [e.arrivee,e.debutDistrib,e.finLivraison,e.depart].filter(Boolean).join(' → ');
+      weekHtml += `<div class="rh-day-row">
+        <span class="rh-date">${jours[i]} ${ds}</span>
+        <span class="rh-horaires">${horaires}</span>
+        <span class="rh-duree">${minToStr(e.totalMin||0)}</span>
+      </div>`;
+    }
+  });
+  document.getElementById('rh-week-detail').innerHTML = weekHtml || '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.8rem;">Aucune saisie cette semaine.</div>';
+
+  // Récap mensuel
+  const totalMoisMin = list.filter(e=>!e.absence).reduce((s,e)=>s+(e.totalMin||0),0);
+  const absences = list.filter(e=>e.absence).length;
+  const joursTravMois = list.filter(e=>!e.absence&&e.totalMin>0).length;
+  const semaines = Math.ceil(list.length/5)||1;
+  const contratMoisMin = rhContrat*60*(joursTravMois/5||1);
+  const supMoisMin = Math.max(0, totalMoisMin - rhContrat*60*4);
+
+  document.getElementById('rh-month-recap').innerHTML = `
+    <div class="hist-table-wrap"><table><thead><tr>
+      <th>Indicateur</th><th>Valeur</th>
+    </tr></thead><tbody>
+      <tr><td>Jours travaillés</td><td style="font-family:'DM Mono';font-weight:700;color:var(--green)">${joursTravMois} jours</td></tr>
+      <tr><td>Total heures travaillées</td><td style="font-family:'DM Mono';font-weight:700;color:var(--green)">${minToStr(totalMoisMin)}</td></tr>
+      <tr><td>Heures supplémentaires (mois)</td><td style="font-family:'DM Mono';font-weight:700;color:var(--ibk-orange)">${minToStr(supMoisMin)}</td></tr>
+      <tr><td>Absences</td><td style="font-family:'DM Mono';font-weight:700;color:var(--red)">${absences} jour(s)</td></tr>
+      <tr><td>Contrat de référence</td><td style="font-family:'DM Mono';font-weight:700">${rhContrat}h/semaine</td></tr>
+    </tbody></table></div>`;
+}
+</script>
+</body>
+</html>
